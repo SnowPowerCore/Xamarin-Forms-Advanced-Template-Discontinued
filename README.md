@@ -74,3 +74,43 @@ Common application services. They may make your life as a developer a little eas
 `Settings` is a service for storing & managing in-app key-values.
 
 `Shell` is a service for Xamarin.Forms Shell navigation execution.
+
+> **Better API management** `(via Refit library)`
+
+This library is great for declaring API. Read more [here](https://github.com/reactiveui/refit).
+
+> **Base viewmodel**
+
+Base viewmodel with INotifyPropertyChanged implementation.
+
+> **Xamarin.Forms Shell**
+
+A new, modern way to organize & structure application navigation. Read more [here](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/shell/).
+
+> **Material Design** `(via XF.Material library)`
+
+Crossplatform Google Material design controls. Read more [here](https://github.com/Baseflow/XF-Material-Library).
+
+> **Ripple effects & attached commands** `(via XamEffects library)`
+
+Read more [here](https://github.com/mrxten/XamEffects).
+
+> **Analytics & diagnostics** `(via AppCenter libraries)`
+
+AppCenter tracks analytics & diagnostics data. Read more [here](https://docs.microsoft.com/en-us/appcenter/dashboard/).
+
+> **Image better handling** `(via glidex.forms library on Android & Xamarin.Forms.Nuke library on iOS)`
+
+Read more [here](https://github.com/roubachof/Xamarin.Forms.Nuke).
+
+> **Modified **`App.xaml.cs`** file**
+
+`App.xaml.cs` with a little setup. `Services` store static property is present here. Also made some adjustments with keyboard & other services.
+
+> **Startup (configure) file**
+
+`Startup.cs` is an entry point for your app. You should retrieve shared `App` class from `Init` method inside your platform-specific class and provide a collection of native services implementation. Also, here you register all your dependencies & routes (for Xamarin.Forms Shell).
+
+> **Android & iOS preconfigured projects**
+
+Android & iOS have been already preconfigured to use `Startup` class & provide native services. Also, Android has a slightly edited   `.csproj` file.
