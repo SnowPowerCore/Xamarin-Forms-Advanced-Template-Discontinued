@@ -105,7 +105,7 @@ Read more [here](https://github.com/roubachof/Xamarin.Forms.Nuke).
 
 > **Modified **`App.xaml.cs`** file**
 
-`App.xaml.cs` with a little setup. `Services` store static property is present here. Also made some adjustments with keyboard & other services.
+`App.xaml.cs` with a little setup. `Services` store static property is present here. Also, contains some adjustments with keyboard & other services.
 
 > **Startup (configure) file**
 
