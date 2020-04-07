@@ -113,7 +113,7 @@ Read more [here](https://github.com/roubachof/Xamarin.Forms.Nuke).
 
 > **Android & iOS preconfigured projects**
 
-Android & iOS have been already preconfigured to use `Startup` class & provide native services. Also, Android has a slightly edited   `.csproj` file for a better performance.
+Android & iOS have already been preconfigured to use `Startup` class & provide native services. Also, Android has a slightly edited   `.csproj` file for a better performance.
 
 > **Startup tracing & LLVM enabled for Android**
 
