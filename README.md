@@ -113,4 +113,8 @@ Read more [here](https://github.com/roubachof/Xamarin.Forms.Nuke).
 
 > **Android & iOS preconfigured projects**
 
-Android & iOS have been already preconfigured to use `Startup` class & provide native services. Also, Android has a slightly edited   `.csproj` file.
+Android & iOS have been already preconfigured to use `Startup` class & provide native services. Also, Android has a slightly edited   `.csproj` file for a better performance.
+
+> **Startup tracing & LLVM enabled for Android**
+
+Startup tracing is a feature for decreasing application startup time with a small side effect on APK size. Read more [here](https://devblogs.microsoft.com/xamarin/faster-startup-times-with-startup-tracing-on-android/). You can also setup custom profile for further improvements by yourself. Read more [here](https://devblogs.microsoft.com/xamarin/faster-android-startup-times-with-startup-tracing/). LLVM is an optimizing compiler. Read about it [here](https://docs.microsoft.com/en-us/xamarin/android/deploy-test/release-prep/?tabs=windows#llvm-optimizing-compiler). Linker behaviour is set to "Sdk Assemblies Only".
