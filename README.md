@@ -1,9 +1,11 @@
-# Xamarin Forms Advanced Template
+# Xamarin Forms Advanced Template v.2
 Xamarin.Forms template. Packed with the most useful things for the developer.
+**Updated to second version - please, read description**.
 
 ### Description
 
 Zip file is a template package. It contains:
+* **AppSettings.json** `(for constants & useful data, retrieve easily with IConfiguration)`
 * **Microsoft Extensions** `(Host, DI, Logging)`
 * **Helpers** `(event-to-command behaviour, image resource, translate, viewmodel locator)`
 * **Async commands** `(via AsyncAwaitBestPractices.MVVM library)`
@@ -11,8 +13,8 @@ Zip file is a template package. It contains:
 * **Utility & crossplatform services**
 * **Better API management** `(via Refit library)`
 * **Base viewmodel**
+* **Base page view**
 * **Xamarin.Forms Shell**
-* **Material Design** `(via XF.Material library)`
 * **Ripple effects & attached commands** `(via XamEffects library)`
 * **Analytics & diagnostics** `(via AppCenter libraries)`
 * **Image better handling** `(via glidex.forms library on Android & Xamarin.Forms.Nuke library on iOS)`
@@ -26,6 +28,10 @@ Zip file is a template package. It contains:
 Place **.zip** file from this repo into the *`%userprofile%\Documents\Visual Studio 2019\Templates\ProjectTemplates`* folder. Open **Visual Studio**, select **"Create new"** option and search for `Xamarin Forms Advanced Template.` Scroll down to see the template.
 
 ### In-depth overview
+
+> **AppSettings.json** `(for constants & useful data, retrieve easily with IConfiguration)`
+
+You can store any setting or public data within this .json file. There are two files, each will be used in a particular mode - debug & release. Retrieve data from injecting IConfiguration into any place of the code.
 
 > **Microsoft Extensions** `(Host, DI, Logging)`
 
@@ -61,7 +67,7 @@ Common application services. They may make your life as a developer a little eas
 
 `Localize` is a service for providing ability to change language of your application, again, on demand.
 
-`Toast` is a service for displaying toast messages. It is **Android** only.
+`Toast` is a service for displaying toast messages.
 
 `Analytics` is a service for tracking errors and events inside of your app with the help of **AppCenter**.
 
@@ -79,6 +85,10 @@ Common application services. They may make your life as a developer a little eas
 
 This library is great for declaring API. Read more [here](https://github.com/reactiveui/refit).
 
+> **Base page view**
+
+Base page view. You have to set viewmodel using `ViewModelType` property (pass a type).
+
 > **Base viewmodel**
 
 Base viewmodel with INotifyPropertyChanged implementation.
@@ -86,10 +96,6 @@ Base viewmodel with INotifyPropertyChanged implementation.
 > **Xamarin.Forms Shell**
 
 A new, modern way to organize & structure application navigation. Read more [here](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/shell/).
-
-> **Material Design** `(via XF.Material library)`
-
-Crossplatform Google Material design controls. Read more [here](https://github.com/Baseflow/XF-Material-Library).
 
 > **Ripple effects & attached commands** `(via XamEffects library)`
 
