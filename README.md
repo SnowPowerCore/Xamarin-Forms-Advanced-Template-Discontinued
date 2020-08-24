@@ -1,4 +1,4 @@
-# Xamarin Forms Advanced Template v.2
+# Xamarin Forms Advanced Template v. 2
 Xamarin.Forms template. Packed with the most useful things for the developer.
 **Updated to second version - please, read description**. Feel free to contribute or create issues for this project.
 
@@ -6,6 +6,7 @@ Xamarin.Forms template. Packed with the most useful things for the developer.
 
 Zip file is a template package. It contains:
 * **AppSettings.json** `(for constants & useful data, retrieve easily with IConfiguration)`
+* **Environments** `(for clear env separation)`
 * **Microsoft Extensions** `(Host, DI, Logging)`
 * **Helpers** `(event-to-command behaviour, image resource, translate, viewmodel locator)`
 * **Async commands** `(via AsyncAwaitBestPractices.MVVM library)`
