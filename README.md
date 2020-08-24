@@ -75,11 +75,11 @@ Common application services. They may make your life as a developer a little eas
 
 `Message` is a service which displays different types of dialogs with different content.
 
-`Navigation` is a service which is intended to be used throughout the application as a navigation provider. Right now it depends on another `Shell` service because of this template contains `AppShell` (Xamarin.Forms Shell).
+`LegacyNavigation` is a service which is intended to be used throughout the application as a navigation provider. It's a classic navigation service with Xamarin.Forms Shell's routing support (you can pass data through QueryParameter attributes, just like with Shell).
+
+`ShellNavigation` is a service which is intended to be used throughout the application as a navigation provider. It's a Shell navigation service.
 
 `Settings` is a service for storing & managing in-app key-values.
-
-`Shell` is a service for Xamarin.Forms Shell navigation execution.
 
 > **Better API management** `(via Refit library)`
 
