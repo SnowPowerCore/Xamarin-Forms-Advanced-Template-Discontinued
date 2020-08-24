@@ -1,6 +1,6 @@
 # Xamarin Forms Advanced Template v.2
 Xamarin.Forms template. Packed with the most useful things for the developer.
-**Updated to second version - please, read description**.
+**Updated to second version - please, read description**. Feel free to contribute or create issues for this project.
 
 ### Description
 
