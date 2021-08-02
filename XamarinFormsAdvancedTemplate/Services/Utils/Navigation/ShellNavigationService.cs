@@ -1,125 +1,104 @@
-﻿using Rg.Plugins.Popup.Pages;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using XamarinFormsAdvancedTemplate.Controls;
+using XamarinFormsAdvancedTemplate.Extensions;
+using XamarinFormsAdvancedTemplate.Services.Utils.Processors;
 
 namespace XamarinFormsAdvancedTemplate.Services.Utils.Navigation
 {
     public class ShellNavigationService : INavigationService
     {
-        public Task SwitchMainPageAsync<TPage>(TPage page) where TPage : Page
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IShellProcessor _shellProcessor;
+        private readonly IPageProcessor _pageProcessor;
+
+        public ShellNavigationService(IServiceProvider serviceProvider,
+                                      IShellProcessor shellProcessor,
+                                      IPageProcessor pageProcessor)
         {
-            if (!(page is Shell)) return Task.CompletedTask;
-            Shell.Current.FlyoutIsPresented = false;
-            return CloseModalAsync()
-                .ContinueWith(t =>
-                    Device.InvokeOnMainThreadAsync(() => Application.Current.MainPage = page as Shell),
-                        TaskContinuationOptions.OnlyOnRanToCompletion);
+            _serviceProvider = serviceProvider;
+            _shellProcessor = shellProcessor;
+            _pageProcessor = pageProcessor;
         }
 
-        public void DetermineAndSetMainPage(string mainRouteName) =>
-            Application.Current.MainPage = (Shell)Routing.GetOrCreateContent(mainRouteName);
-
-        public bool CheckCurrentPageType<TType>() =>
-            Shell.Current.Navigation.NavigationStack.Count > 1 &&
-            Shell.Current.Navigation.NavigationStack.LastOrDefault().GetType().Equals(typeof(TType));
-
-        public Task OpenModalAsync(Page modal, bool animated = true) =>
-            Shell.Current.Navigation.PushModalAsync(modal, animated);
-
-        public Task CloseModalAsync(bool animated = true)
+        public Task SwitchMainPageAsync<TPage>(TPage page) where TPage : Page
         {
-            if (Shell.Current.Navigation.ModalStack.Count > 0)
-                return Shell.Current.Navigation.PopModalAsync(animated);
+            if (page is Shell shell)
+            {
+                Shell.Current.FlyoutIsPresented = false;
+                var updatedShell = _shellProcessor.AssignShellData(shell);
+                return CloseModalAsync()
+                    .ContinueWith(t =>
+                        Device.InvokeOnMainThreadAsync(() => Application.Current.MainPage = shell),
+                            TaskContinuationOptions.OnlyOnRanToCompletion);
+            }
 
             return Task.CompletedTask;
         }
 
-        public Task OpenPopupAsync(string routeWithParams, bool animated = true) =>
-           PopupNavigation.Instance.PushAsync(GetElementFromRouting<PopupPage>(routeWithParams), animated);
-
-        public Task ClosePopupAsync(bool animated = true)
+        public void DetermineAndSetMainPage<TPage>() where TPage : Page
         {
-            if (PopupNavigation.Instance.PopupStack.Count > 0)
-                return PopupNavigation.Instance.PopAsync(animated);
-            else return Task.CompletedTask;
+            var shell = _serviceProvider.GetService<TPage>() as HostedShell;
+            var updatedShell = _shellProcessor.AssignShellData(shell);
+            Application.Current.MainPage = updatedShell;
         }
 
-        private T GetElementFromRouting<T>(string routeWithParams) where T : Element
+        public Task OpenModalAsync(Page modal, bool animated = true)
         {
-            var routeAndParams = routeWithParams.Split('?');
-            if (routeAndParams.Length > 1)
-            {
-                var routeName = routeAndParams.FirstOrDefault();
-                var query = routeAndParams.LastOrDefault();
-                var queryData = ParseQueryString(query);
-                var page = (T)Routing.GetOrCreateContent(routeName);
-                var attrs = (QueryPropertyAttribute[])Attribute.GetCustomAttributes(
-                    page.GetType(),
-                    typeof(QueryPropertyAttribute));
-                if (attrs != null && attrs.Length > 0)
-                {
-                    foreach (var attr in attrs)
-                    {
-                        queryData.TryGetValue(attr.QueryId, out var value);
-                        var prop = page
-                            .GetType()
-                            .GetProperty(attr.Name, BindingFlags.Public | BindingFlags.Instance);
-                        if (null != prop && prop.CanWrite)
-                            prop.SetValue(page, value, null);
-                    }
-                }
-                return page;
-            }
-            else
-            {
-                return (T)Routing.GetOrCreateContent(routeWithParams);
-            }
+            var updatedModal = _pageProcessor.AssignPageData(modal);
+            return Device.InvokeOnMainThreadAsync(
+                () => Shell.Current.Navigation.PushModalAsync(updatedModal, animated));
         }
 
-        private Dictionary<string, string> ParseQueryString(string query)
-        {
-            if (query.StartsWith("?", StringComparison.Ordinal))
-                query = query.Substring(1);
-            var lookupDict = new Dictionary<string, string>();
-            if (query == null)
-                return lookupDict;
-            foreach (var part in query.Split('&'))
-            {
-                var p = part.Split('=');
-                if (p.Length != 2)
-                    continue;
-                lookupDict[p[0]] = p[1];
-            }
+        public Task CloseModalAsync(bool animated = true) =>
+            Shell.Current.Navigation.ModalStack.Count > 0
+                ? Device.InvokeOnMainThreadAsync(
+                    () => Shell.Current.Navigation.PopModalAsync(animated))
+                : Task.CompletedTask;
 
-            return lookupDict;
+        public Task OpenPopupAsync(string routeWithParams, bool animated = true)
+        {
+            var popupPage = routeWithParams.GetElementFromRouting<PopupPage>();
+            var updatedPopupPage = _pageProcessor.AssignPageData(popupPage);
+            return Device.InvokeOnMainThreadAsync(
+                () => PopupNavigation.Instance.PushAsync(updatedPopupPage, animated));
         }
+
+        public Task ClosePopupAsync(bool animated = true) =>
+            PopupNavigation.Instance.PopupStack.Count > 0
+                ? Device.InvokeOnMainThreadAsync(
+                    () => PopupNavigation.Instance.PopAsync(animated))
+                : Task.CompletedTask;
 
         public Task NavigateToPageAsync(string routeWithParams, bool animated = true)
         {
             Shell.Current.FlyoutIsPresented = false;
-            return Shell.Current.GoToAsync(routeWithParams, animated);
+            var page = routeWithParams.GetElementFromRouting<Page>();
+            var updatedPage = _pageProcessor.AssignPageData(page);
+            return Device.InvokeOnMainThreadAsync(
+                () => Shell.Current.Navigation.PushAsync(updatedPage, animated));
         }
 
-        public Task NavigateBackAsync(bool animated = true)
-        {
-            if (Shell.Current.Navigation.NavigationStack.Count > 1)
-                return Shell.Current.Navigation.PopAsync(animated);
-            return Task.CompletedTask;
-        }
+        public Task NavigateBackAsync(bool animated = true) =>
+            Shell.Current.Navigation.NavigationStack.Count > 1
+                ? Device.InvokeOnMainThreadAsync(
+                    () => Shell.Current.Navigation.PopAsync(animated))
+                : Task.CompletedTask;
 
         public Task NavigateToRootAsync(bool animated = true)
         {
             Shell.Current.FlyoutIsPresented = false;
-            return Shell.Current.Navigation.PopToRootAsync(animated);
+            return Device.InvokeOnMainThreadAsync(
+                () => Shell.Current.Navigation.PopToRootAsync(animated));
         }
 
         public Task SwitchItemAsync(int index) =>
-            Device.InvokeOnMainThreadAsync(() =>
-                Shell.Current.CurrentItem = Shell.Current.Items.ElementAtOrDefault(index));
+            Device.InvokeOnMainThreadAsync(
+                () => Shell.Current.CurrentItem = Shell.Current.Items.ElementAtOrDefault(index));
     }
 }

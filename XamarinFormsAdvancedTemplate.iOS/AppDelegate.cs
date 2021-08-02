@@ -1,4 +1,7 @@
-﻿using Foundation;
+﻿using AppHosting.Abstractions;
+using AppHosting.Hosting;
+using AppHosting.Hosting.Extensions;
+using Foundation;
 using Microsoft.Extensions.DependencyInjection;
 using UIKit;
 using XamarinFormsAdvancedTemplate.iOS.Implementations;
@@ -15,12 +18,19 @@ namespace XamarinFormsAdvancedTemplate.iOS
             Xamarin.Forms.Nuke.FormsHandler.Init();
             Rg.Plugins.Popup.Popup.Init();
             XamEffects.iOS.Effects.Init();
-            LoadApplication(Startup.Init(ConfigureServices));
 
+            var appHost = CreateMobileHostBuilder().Build();
+            LoadApplication(appHost.Start<App>());
             return base.FinishedLaunching(app, options);
         }
 
-        private void ConfigureServices(IServiceCollection services)
+        public IAppHostBuilder CreateMobileHostBuilder() =>
+            AppHost
+                .CreateDefaultAppBuilder(null)
+                .ConfigureServices(ConfigureNativeServices)
+                .UseStartup<Startup>();
+
+        private void ConfigureNativeServices(IServiceCollection services)
         {
             services.AddSingleton(typeof(ILocalizeService), typeof(LocalizeService));
             services.AddSingleton(typeof(IAppQuit), typeof(AppQuit));

@@ -46,7 +46,7 @@ namespace XamarinFormsAdvancedTemplate.Helpers
             if (text != null)
                 return _resourceManager.GetString(text, CultureInfo.CurrentCulture);
 
-            return "";
+            return string.Empty;
         }
     }
 }

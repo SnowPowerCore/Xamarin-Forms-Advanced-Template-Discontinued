@@ -135,11 +135,11 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Rg.Plugins.Popup">
-      <Version>2.0.0.3</Version>
+      <Version>2.0.0.12</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="4.7.0.1260" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2083" />
     <PackageReference Include="Xamarin.Forms.Nuke">
-      <Version>8.4.0</Version>
+      <Version>8.4.3</Version>
     </PackageReference>
     <PackageReference Include="XamEffects">
       <Version>1.6.3</Version>
@@ -147,6 +147,14 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
+    <ProjectReference Include="..\MobileHosting.Abstractions\AppHosting.Abstractions.csproj">
+      <Project>{78AEB35A-BD44-4EF9-A295-152A2A45F6BF}</Project>
+      <Name>AppHosting.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MobileHosting.Hosting\AppHosting.Hosting.csproj">
+      <Project>{F39B8D2B-2D2A-45CE-A354-D1A679804550}</Project>
+      <Name>AppHosting.Hosting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XamarinFormsAdvancedTemplate\XamarinFormsAdvancedTemplate.csproj">
       <Project>{2CDEAC70-48EA-46DC-AA98-476DD96CAA29}</Project>
       <Name>XamarinFormsAdvancedTemplate</Name>

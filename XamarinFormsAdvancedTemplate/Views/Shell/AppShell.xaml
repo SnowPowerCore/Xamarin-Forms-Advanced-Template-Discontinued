@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Shell xmlns="http://xamarin.com/schemas/2014/forms"
-       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:pages="clr-namespace:XamarinFormsAdvancedTemplate.Views.Pages"
-       x:Class="XamarinFormsAdvancedTemplate.Views.Shell.AppShell">
-    <pages:WelcomePage/>
-</Shell>
+<controls:HostedShell xmlns="http://xamarin.com/schemas/2014/forms"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                      xmlns:controls="clr-namespace:XamarinFormsAdvancedTemplate.Controls"
+                      xmlns:utils="clr-namespace:XamarinFormsAdvancedTemplate.Models.Utils"
+                      xmlns:pages="clr-namespace:XamarinFormsAdvancedTemplate.Views.Pages"
+                      x:Class="XamarinFormsAdvancedTemplate.Views.Shell.AppShell">
+    <ShellContent x:Name="welcomePage" Route="welcomePage">
+        <ShellContent.ContentTemplate>
+            <utils:MemorizedDataTemplate>
+                <x:Arguments>
+                    <utils:TypeWrapper Type="{x:Type pages:WelcomePage}"/>
+                </x:Arguments>
+            </utils:MemorizedDataTemplate>
+        </ShellContent.ContentTemplate>
+    </ShellContent>
+    <ShellContent x:Name="otherPage" Route="otherPage">
+        <ShellContent.ContentTemplate>
+            <utils:MemorizedDataTemplate>
+                <x:Arguments>
+                    <utils:TypeWrapper Type="{x:Type pages:OtherPage}"/>
+                </x:Arguments>
+            </utils:MemorizedDataTemplate>
+        </ShellContent.ContentTemplate>
+    </ShellContent>
+</controls:HostedShell>

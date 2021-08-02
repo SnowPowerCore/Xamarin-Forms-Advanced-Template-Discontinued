@@ -1,30 +1,6 @@
-﻿using System.Threading.Tasks;
-using Xamarin.Forms;
-
-namespace XamarinFormsAdvancedTemplate.Services.Utils.Navigation
+﻿namespace XamarinFormsAdvancedTemplate.Services.Utils.Navigation
 {
-    public interface INavigationService
+    public interface INavigationService : IPageNavigation, IPopupNavigation, IModalNavigation, ITabbedNavigation
     {
-        Task SwitchMainPageAsync<TPage>(TPage page) where TPage : Page;
-
-        void DetermineAndSetMainPage(string mainRouteName);
-
-        bool CheckCurrentPageType<TType>();
-
-        Task SwitchItemAsync(int index);
-
-        Task OpenPopupAsync(string routeWithParams, bool animated = true);
-
-        Task ClosePopupAsync(bool animated = true);
-
-        Task NavigateToPageAsync(string routeWithParams, bool animated = true);
-
-        Task NavigateBackAsync(bool animated = true);
-
-        Task NavigateToRootAsync(bool animated = true);
-
-        Task OpenModalAsync(Page modal, bool animated = true);
-
-        Task CloseModalAsync(bool animated = true);
     }
 }
