@@ -1,9 +1,10 @@
-﻿using System;
+﻿using AppHosting.Abstractions;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using XamarinFormsAdvancedTemplate.Services.Utils.Analytics;
 using XamarinFormsAdvancedTemplate.Services.Utils.Language;
 using XamarinFormsAdvancedTemplate.Services.Utils.Navigation;
+using XamarinFormsAdvancedTemplate.Views.Shell;
 using Application = Xamarin.Forms.Application;
 
 namespace XamarinFormsAdvancedTemplate
@@ -11,22 +12,23 @@ namespace XamarinFormsAdvancedTemplate
     public partial class App : Application
     {
         #region Fields
-        private ILanguageService _language;
-        private INavigationService _navigation;
-        private IAnalyticsService _analytics;
-        #endregion
-
-        #region Properties
-        public static IServiceProvider Services { get; set; }
+        private readonly ILanguageService _language;
+        private readonly INavigationService _navigation;
+        private readonly IAnalyticsService _analytics;
+        private readonly IAppHostLifetime _appHostLifetime;
         #endregion
 
         #region Constructor
-        public App()
+        public App(ILanguageService language,
+                   INavigationService navigation,
+                   IAnalyticsService analytics,
+                   IAppHostLifetime appHostLifetime)
         {
-            InitializeComponent();
-            Current
-                .On<Android>()
-                .UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
+
+            _language = language;
+            _navigation = navigation;
+            _analytics = analytics;
+            _appHostLifetime = appHostLifetime;
 
             InitApp();
         }
@@ -35,9 +37,10 @@ namespace XamarinFormsAdvancedTemplate
         #region Methods
         private void InitApp()
         {
-            _language = (ILanguageService)Services.GetService(typeof(ILanguageService));
-            _navigation = (INavigationService)Services.GetService(typeof(INavigationService));
-            _analytics = (IAnalyticsService)Services.GetService(typeof(IAnalyticsService));
+            InitializeComponent();
+            Current
+                .On<Android>()
+                .UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
         }
 
         protected override void OnStart()
@@ -45,8 +48,20 @@ namespace XamarinFormsAdvancedTemplate
             base.OnStart();
 
             _language.DetermineAndSetLanguage();
-            _navigation.DetermineAndSetMainPage("mainPage");
+            _navigation.DetermineAndSetMainPage<AppShell>();
             _analytics.TrackEvent("App started.");
+        }
+
+        protected override void OnResume()
+        {
+            _appHostLifetime.NotifyResuming();
+            base.OnResume();
+        }
+
+        protected override void OnSleep()
+        {
+            _appHostLifetime.NotifySleeping();
+            base.OnSleep();
         }
         #endregion
     }

@@ -2,8 +2,10 @@
 <page:BasePageView xmlns="http://xamarin.com/schemas/2014/forms"
                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                    xmlns:page="clr-namespace:XamarinFormsAdvancedTemplate.Views.Pages"
-                   xmlns:vms="clr-namespace:XamarinFormsAdvancedTemplate.ViewModels"
-                   x:Class="XamarinFormsAdvancedTemplate.Views.Pages.WelcomePage"
-                   ViewModelType="{x:Type vms:WelcomeViewModel}">
-    <Label HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Text="Welcome! :)"/>
+                   x:Class="XamarinFormsAdvancedTemplate.Views.Pages.WelcomePage">
+    <StackLayout Orientation="Vertical">
+        <Label x:Name="lbl" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+            Text="{Binding Hello}"/>
+        <Button x:Name="btn"/>
+    </StackLayout>
 </page:BasePageView>
