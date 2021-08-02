@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AppHosting.Abstractions\AppHosting.Abstractions.csproj" />
     <ProjectReference Include="..\MobileHosting.Abstractions\AppHosting.Abstractions.csproj" />
   </ItemGroup>
 
