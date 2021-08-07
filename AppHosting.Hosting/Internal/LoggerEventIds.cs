@@ -1,4 +1,4 @@
-﻿namespace AppHosting.Hosting
+﻿namespace AppHosting.Hosting.Internal
 {
     internal static class LoggerEventIds
     {

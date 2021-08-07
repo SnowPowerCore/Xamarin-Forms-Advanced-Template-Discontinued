@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Hosting;
 using System;
 
-namespace AppHosting.Hosting
+namespace AppHosting.Hosting.Internal
 {
-    public class AppHostOptions
+    internal class AppHostOptions
     {
         public string ApplicationName { get; set; }
 

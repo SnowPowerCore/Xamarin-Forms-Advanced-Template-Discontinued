@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AppHosting.Abstractions.Internal;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using Xamarin.Forms;
 using XamarinFormsAdvancedTemplate.Services.Utils.Analytics;
 using XamarinFormsAdvancedTemplate.Services.Utils.Language;
@@ -15,13 +17,13 @@ namespace XamarinFormsAdvancedTemplate
     /// <summary>
     /// We create application and all deps throughout this class
     /// </summary>
-    public class Startup
+    public class Startup : IAppStartup
     {
         /// <summary>
-        /// Crossplatform services configuration
+        /// Cross-platform services configuration
         /// </summary>
         /// <param name="services">Services collection</param>
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             #region Services
             services
@@ -43,6 +45,8 @@ namespace XamarinFormsAdvancedTemplate
                 .AddSingleton<App>()
                 .AddSingleton<AppShell>();
             #endregion
+
+            return services.BuildServiceProvider();
         }
 
         /// <summary>

@@ -1,4 +1,7 @@
 ﻿using AppHosting.Abstractions;
+using AppHosting.Abstractions.Internal;
+using AppHosting.Hosting.Extensions;
+using AppHosting.Hosting.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -24,7 +27,7 @@ namespace AppHosting.Hosting
         private Action<HostBuilderContext, IServiceCollection>? _configureServices;
         private Action<HostBuilderContext, IConfigurationBuilder>? _configureAppConfigurationBuilder;
 
-        IDictionary<object, object> Properties { get; } = new Dictionary<object, object>();
+        private IDictionary<object, object> Properties { get; } = new Dictionary<object, object>();
 
         public AppHostBuilder()
         {
@@ -46,7 +49,7 @@ namespace AppHosting.Hosting
         /// </summary>
         /// <param name="key">The key of the setting to add or replace.</param>
         /// <param name="value">The value of the setting to add or replace.</param>
-        /// <returns>The <see cref="IWebHostBuilder"/>.</returns>
+        /// <returns>The <see cref="IAppHostBuilder"/>.</returns>
         public IAppHostBuilder UseSetting(string key, string? value)
         {
             _config[key] = value;
@@ -58,7 +61,7 @@ namespace AppHosting.Hosting
         /// multiple times.
         /// </summary>
         /// <param name="configureServices">A delegate for configuring the <see cref="IServiceCollection"/>.</param>
-        /// <returns>The <see cref="IWebHostBuilder"/>.</returns>
+        /// <returns>The <see cref="IAppHostBuilder"/>.</returns>
         public IAppHostBuilder ConfigureServices(Action<IServiceCollection> configureServices)
         {
             if (configureServices == null)
@@ -72,7 +75,7 @@ namespace AppHosting.Hosting
         /// multiple times.
         /// </summary>
         /// <param name="configureServices">A delegate for configuring the <see cref="IServiceCollection"/>.</param>
-        /// <returns>The <see cref="IWebHostBuilder"/>.</returns>
+        /// <returns>The <see cref="IAppHostBuilder"/>.</returns>
         public IAppHostBuilder ConfigureServices(Action<HostBuilderContext, IServiceCollection> configureServices)
         {
             _configureServices += configureServices;
@@ -83,10 +86,10 @@ namespace AppHosting.Hosting
         /// Adds a delegate for configuring the <see cref="IConfigurationBuilder"/> that will construct an <see cref="IConfiguration"/>.
         /// </summary>
         /// <param name="configureDelegate">The delegate for configuring the <see cref="IConfigurationBuilder" /> that will be used to construct an <see cref="IConfiguration" />.</param>
-        /// <returns>The <see cref="IWebHostBuilder"/>.</returns>
+        /// <returns>The <see cref="IAppHostBuilder"/>.</returns>
         /// <remarks>
-        /// The <see cref="IConfiguration"/> and <see cref="ILoggerFactory"/> on the <see cref="WebHostBuilderContext"/> are uninitialized at this stage.
-        /// The <see cref="IConfigurationBuilder"/> is pre-populated with the settings of the <see cref="IWebHostBuilder"/>.
+        /// The <see cref="IConfiguration"/> and <see cref="ILoggerFactory"/> on the <see cref="HostBuilderContext"/> are uninitialized at this stage.
+        /// The <see cref="IConfigurationBuilder"/> is pre-populated with the settings of the <see cref="IAppHostBuilder"/>.
         /// </remarks>
         public IAppHostBuilder ConfigureAppConfiguration(Action<HostBuilderContext, IConfigurationBuilder> configureDelegate)
         {
@@ -97,8 +100,7 @@ namespace AppHosting.Hosting
         public IAppHost Build()
         {
             if (_mobileHostBuilt)
-                throw new InvalidOperationException(
-                    "Build can only be called once.");
+                throw new InvalidOperationException("Build can only be called once.");
 
             _mobileHostBuilt = true;
 
@@ -158,9 +160,11 @@ namespace AppHosting.Hosting
             _options = new AppHostOptions(_config);
 
             var services = new ServiceCollection();
-            services.AddSingleton(_options);
-            services.AddSingleton(_hostingEnvironment);
-            services.AddSingleton(_context);
+
+            services
+                .AddSingleton(_options)
+                .AddSingleton(_hostingEnvironment)
+                .AddSingleton(_context);
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(_hostingEnvironment.ContentRootPath)
@@ -195,13 +199,7 @@ namespace AppHosting.Hosting
                 }
                 else
                 {
-                    services.AddSingleton(typeof(IAppStartup), sp =>
-                    {
-                        var hostingEnvironment = sp.GetRequiredService<IHostEnvironment>();
-                        var methods = StartupLoader
-                            .LoadMethods(sp, startupType, hostingEnvironment.EnvironmentName);
-                        return new ConventionBasedStartup(methods);
-                    });
+                    //
                 }
             }
             catch (Exception ex)

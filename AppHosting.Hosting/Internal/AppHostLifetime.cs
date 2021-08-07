@@ -1,14 +1,14 @@
-﻿using AppHosting.Abstractions;
+﻿using AppHosting.Abstractions.Internal;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Logging;
 using System;
 
-namespace AppHosting.Hosting
+namespace AppHosting.Hosting.Internal
 {
     /// <summary>
     /// Allows consumers to perform cleanup during a graceful shutdown.
     /// </summary>
-    public class AppHostLifetime : ApplicationLifetime, IAppHostLifetime
+    internal class AppHostLifetime : ApplicationLifetime, IAppHostLifetime
     {
         private readonly ILogger _logger;
 

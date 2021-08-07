@@ -18,7 +18,7 @@ namespace AppHosting.Abstractions
         /// Starts application synchronously.
         /// </summary>
         TApp Start<TApp>();
-        
+
         /// <summary>
         /// Starts application asynchronously.
         /// </summary>

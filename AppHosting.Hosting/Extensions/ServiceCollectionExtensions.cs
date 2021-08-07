@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace AppHosting.Hosting
+namespace AppHosting.Hosting.Extensions
 {
     public static class ServiceCollectionExtensions
     {

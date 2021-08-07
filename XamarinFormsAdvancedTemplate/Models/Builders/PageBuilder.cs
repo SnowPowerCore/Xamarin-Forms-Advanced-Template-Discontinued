@@ -6,82 +6,89 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using XamarinFormsAdvancedTemplate.Attributes;
+using XamarinFormsAdvancedTemplate.Models.Utils;
 
-namespace XamarinFormsAdvancedTemplate.Extensions
+namespace XamarinFormsAdvancedTemplate.Models.Builders
 {
-    public static class PageExtensions
+    public class PageBuilder
     {
-        public static TPage AssignPageAppearing<TPage>(
-            this TPage page, PageAppearingAttribute pageAppearingAttr) where TPage : Page
+        private Page _page;
+
+        private PageBuilder() { }
+
+        public static PageBuilder Init(Page page) =>
+            new PageBuilder { _page = page };
+
+        public PageBuilder AddPageAppearing(PageAppearingAttribute pageAppearingAttr)
         {
             if (string.IsNullOrEmpty(pageAppearingAttr.PageAppearingTaskName))
-                return page;
+                return this;
 
             var methodInvoke = GetPageActionFromBindingContext(
-                page.BindingContext, pageAppearingAttr.PageAppearingTaskName);
+                _page.BindingContext, pageAppearingAttr.PageAppearingTaskName);
 
-            page.Appearing += (o, e) => methodInvoke();
+            _page.Appearing += (o, e) => methodInvoke();
 
-            return page;
+            return this;
         }
 
-        public static TPage AssignPageDisappearing<TPage>(
-            this TPage page, PageDisappearingAttribute pageDisappearingAttr) where TPage : Page
+        public PageBuilder AddPageDisappearing(PageDisappearingAttribute pageDisappearingAttr)
         {
             if (string.IsNullOrEmpty(pageDisappearingAttr.PageDisappearingTaskName))
-                return page;
+                return this;
 
             var methodInvoke = GetPageActionFromBindingContext(
-                page.BindingContext, pageDisappearingAttr.PageDisappearingTaskName);
+                _page.BindingContext, pageDisappearingAttr.PageDisappearingTaskName);
 
-            page.Disappearing += (o, e) => methodInvoke();
+            _page.Disappearing += (o, e) => methodInvoke();
 
-            return page;
+            return this;
         }
 
-        public static TPage AssignCommands<TPage>(
-            this TPage page, CommandAttribute[] commandAttrs) where TPage : Page
+        public PageBuilder AddCommands(CommandAttribute[] commandAttrs)
         {
             foreach (var commandAttr in commandAttrs)
             {
                 if (string.IsNullOrEmpty(commandAttr.CommandDelegateName))
                     continue;
 
-                var desiredControl = GetControlData(page, commandAttr.ControlName,
+                var desiredControl = GetControlData(_page, commandAttr.ControlName,
                     out var desiredControlType, out var bindingContextType);
 
                 AssignCommandParameter(
                     desiredControl, desiredControlType, bindingContextType, commandAttr);
 
                 AssignCommand(
-                    desiredControl, page.BindingContext,
+                    desiredControl, _page.BindingContext,
                     desiredControlType, bindingContextType,
                     commandAttr);
             }
-            return page;
+            return this;
         }
 
-        public static TPage AssignAsyncCommands<TPage>(
-            this TPage page, AsyncCommandAttribute[] commandAttrs) where TPage : Page
+        public PageBuilder AddAsyncCommands(AsyncCommandAttribute[] commandAttrs)
         {
             foreach (var commandAttr in commandAttrs)
             {
                 if (string.IsNullOrEmpty(commandAttr.CommandDelegateName))
                     continue;
 
-                var desiredControl = GetControlData(page, commandAttr.ControlName,
+                var desiredControl = GetControlData(_page, commandAttr.ControlName,
                     out var desiredControlType, out var bindingContextType);
 
                 AssignCommandParameter(
                     desiredControl, desiredControlType, bindingContextType, commandAttr);
 
                 AssignAsyncCommand(
-                    desiredControl, page.BindingContext,
+                    desiredControl, _page.BindingContext,
                     desiredControlType, bindingContextType,
                     commandAttr);
             }
-            return page;
+            return this;
         }
+
+        public static implicit operator Page(PageBuilder builder) =>
+            builder._page;
 
         private static Action GetPageActionFromBindingContext(object bindingContext, string taskName)
         {
@@ -130,10 +137,16 @@ namespace XamarinFormsAdvancedTemplate.Extensions
                 var method = bindingContextType
                     .GetMethod(commandAttr.CommandDelegateName);
 
-                var command = new Command(obj =>
-                    method.Invoke(
+                var canExecuteMethod = bindingContextType
+                    .GetMethod(commandAttr.CommandCanExecuteDelegateName);
+
+                var command = new RelayCommand<object>(
+                    obj => method.Invoke(
                         bindingContext,
-                        new object[] { obj }));
+                        new object[] { obj }),
+                    () => (bool)canExecuteMethod?.Invoke(
+                        bindingContext,
+                        new object[0]));
 
                 commandProp.SetValue(control, command);
             }
@@ -152,20 +165,13 @@ namespace XamarinFormsAdvancedTemplate.Extensions
                 var exceptionMethod = bindingContextType
                     .GetMethod(commandAttr.OnException);
 
-                var command = exceptionMethod is default(MethodInfo)
-                    ? new AsyncCommand<object>(obj =>
-                    {
-                        return method.GetParameters().Count() <= 0
-                        ? (Task)method.Invoke(bindingContext, new object[] { })
-                        : (Task)method.Invoke(bindingContext, new object[] { obj });
-                    }, continueOnCapturedContext: commandAttr.ContinueOnCapturedContext)
-                    : new AsyncCommand<object>(obj =>
-                    {
-                        return method.GetParameters().Count() <= 0
-                        ? (Task)method.Invoke(bindingContext, new object[] { })
-                        : (Task)method.Invoke(bindingContext, new object[] { obj });
-                    }, onException: obj => exceptionMethod.Invoke(bindingContext, new object[] { obj }),
-                       continueOnCapturedContext: commandAttr.ContinueOnCapturedContext);
+                var command = new AsyncRelayCommand<object>(obj =>
+                {
+                    return method.GetParameters().Count() <= 0
+                    ? (Task)method.Invoke(bindingContext, new object[] { })
+                    : (Task)method.Invoke(bindingContext, new object[] { obj });
+                }, onException: obj => exceptionMethod?.Invoke(bindingContext, new object[] { obj }),
+                    continueOnCapturedContext: commandAttr.ContinueOnCapturedContext);
 
                 commandProp.SetValue(control, command);
             }

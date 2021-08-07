@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Hosting;
 using System.IO;
 
-namespace AppHosting.Hosting
+namespace AppHosting.Hosting.Internal
 {
-    public class AppHostEnvironment : IHostEnvironment
+    internal class AppHostEnvironment : IHostEnvironment
     {
         public AppHostEnvironment() { }
 

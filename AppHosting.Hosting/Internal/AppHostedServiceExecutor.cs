@@ -1,22 +1,18 @@
-﻿using AppHosting.Abstractions;
+﻿using AppHosting.Abstractions.Internal;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AppHosting.Hosting
+namespace AppHosting.Hosting.Internal
 {
     internal class AppHostedServiceExecutor : IAppHostedServiceExecutor
     {
         private readonly IEnumerable<IHostedService> _services;
-        private readonly ILogger<AppHostedServiceExecutor> _logger;
 
-        public AppHostedServiceExecutor(
-            ILogger<AppHostedServiceExecutor> logger, IEnumerable<IHostedService> services)
+        public AppHostedServiceExecutor(IEnumerable<IHostedService> services)
         {
-            _logger = logger;
             _services = services;
         }
 

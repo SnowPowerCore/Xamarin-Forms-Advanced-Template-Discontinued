@@ -12,16 +12,20 @@ namespace XamarinFormsAdvancedTemplate.Attributes
 
         public string CommandDelegateName { get; } = string.Empty;
 
+        public string CommandCanExecuteDelegateName { get; } = string.Empty;
+
         public string CommandObjectName { get; }
 
         public CommandAttribute(
             string controlName,
             string commandDelegateName,
-            string commandObjectName = "")
+            string commandObjectName = "",
+            string commandCanExecuteDelegateName = "")
         {
             ControlName = controlName;
             CommandDelegateName = commandDelegateName;
             CommandObjectName = commandObjectName;
+            CommandCanExecuteDelegateName = commandCanExecuteDelegateName;
         }
     }
 
@@ -39,9 +43,11 @@ namespace XamarinFormsAdvancedTemplate.Attributes
             string controlName,
             string commandTaskName,
             string commandObjectName = "",
+            string commandCanExecuteDelegateName = "",
             bool continueOnCapturedContext = false,
             string onException = "")
-            : base(controlName, commandTaskName, commandObjectName)
+            : base(controlName, commandTaskName,
+                  commandObjectName, commandCanExecuteDelegateName)
         {
             ContinueOnCapturedContext = continueOnCapturedContext;
             OnException = onException;

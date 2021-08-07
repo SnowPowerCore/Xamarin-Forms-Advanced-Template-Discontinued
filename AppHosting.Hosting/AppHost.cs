@@ -1,5 +1,7 @@
 ﻿using AppHosting.Abstractions;
+using AppHosting.Abstractions.Internal;
 using AppHosting.Hosting.Extensions;
+using AppHosting.Hosting.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,7 +10,6 @@ using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.IO;
 using System.Reflection;
-using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,11 +27,9 @@ namespace AppHosting.Hosting
 
         private readonly IServiceProvider _hostingServiceProvider;
         private readonly AppHostOptions _options;
-        private readonly IConfiguration _config;
         private readonly AggregateException _hostingStartupErrors;
 
         private IServiceProvider _applicationServices;
-        private ExceptionDispatchInfo _applicationServicesException;
         private ILogger _logger = NullLogger.Instance;
 
         private bool _stopped;
@@ -47,7 +46,6 @@ namespace AppHosting.Hosting
             IConfiguration config,
             AggregateException hostingStartupErrors)
         {
-            _config = config ?? throw new ArgumentNullException(nameof(config));
             _hostingStartupErrors = hostingStartupErrors;
             _options = options;
             _applicationServiceCollection = appServices ?? throw new ArgumentNullException(nameof(appServices));
@@ -56,10 +54,6 @@ namespace AppHosting.Hosting
             // There's no way to register multiple service types per definition. See https://github.com/aspnet/DependencyInjection/issues/360
             _applicationServiceCollection.AddSingleton(services
                 => services.GetService<AppHostLifetime>() as IHostApplicationLifetime);
-#pragma warning disable CS0618 // Type or member is obsolete
-            _applicationServiceCollection.AddSingleton(services
-                => services.GetService<AppHostLifetime>() as IApplicationLifetime);
-#pragma warning restore CS0618 // Type or member is obsolete
             _applicationServiceCollection.AddSingleton<IAppHostedServiceExecutor, AppHostedServiceExecutor>();
         }
 
@@ -70,15 +64,13 @@ namespace AppHosting.Hosting
             {
                 EnsureApplicationServices();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // EnsureApplicationServices may have failed due to a missing or throwing Startup class.
                 if (_applicationServices == null)
                 {
                     _applicationServices = _applicationServiceCollection.BuildServiceProvider();
                 }
-
-                _applicationServicesException = ExceptionDispatchInfo.Capture(ex);
             }
         }
 
@@ -110,7 +102,6 @@ namespace AppHosting.Hosting
 
         public virtual async Task<TApp> StartAsync<TApp>(CancellationToken cancellationToken = default)
         {
-            HostingEventSource.Log.HostStart();
             _logger = _applicationServices
                 .GetRequiredService<ILoggerFactory>()
                 .CreateLogger("AppHosting.Hosting");
@@ -155,9 +146,6 @@ namespace AppHosting.Hosting
                 cancellationToken = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, timeoutToken).Token;
             }
 
-            // Fire IApplicationLifetime.Stopping
-            _applicationLifetime?.StopApplication();
-
             // Fire the IHostedService.Stop
             if (_appHostedServiceExecutor != null)
             {
@@ -168,8 +156,6 @@ namespace AppHosting.Hosting
 
             // Fire IApplicationLifetime.Stopped
             _applicationLifetime?.StopApplication();
-
-            HostingEventSource.Log.HostStop();
         }
 
         public void Dispose() =>

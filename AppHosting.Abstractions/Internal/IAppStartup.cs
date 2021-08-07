@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace AppHosting.Abstractions
+namespace AppHosting.Abstractions.Internal
 {
     public interface IAppStartup
     {

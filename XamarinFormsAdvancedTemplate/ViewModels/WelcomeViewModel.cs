@@ -1,5 +1,6 @@
 ﻿using PropertyChanged;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using XamarinFormsAdvancedTemplate.Services.Utils.Navigation;
 
@@ -11,6 +12,9 @@ namespace XamarinFormsAdvancedTemplate.ViewModels
         private readonly INavigationService _navigation;
 
         public string Hello { get; set; } = "Hello welcome";
+
+        public List<string> Strings { get; set; } =
+            new List<string>();
 
         public WelcomeViewModel(INavigationService navigation)
         {
@@ -29,10 +33,24 @@ namespace XamarinFormsAdvancedTemplate.ViewModels
             return Task.CompletedTask;
         }
 
-        public async Task InterestingCommandAsync(string hello)
+        public void InterestingCommand(string parameter)
         {
-            await _navigation.NavigateToPageAsync("otherPage").ConfigureAwait(false);
+            for (var i = 0; i < 100000; i++)
+            {
+                var str = $"This is item #{ i }";
+                Strings.Add(str);
+                if (i % 1000 == 0)
+                    Console.WriteLine($"{ str } | Count is { Strings.Count }");
+            }
         }
+
+        public async Task InterestingCommandAsync(string parameter)
+        {
+            await _navigation.NavigateToPageAsync("otherPage");
+        }
+
+        public bool InterestingCommandCanExecute() =>
+            true;
 
         public void HandleException(Exception e)
         {
