@@ -2,7 +2,7 @@
 using System;
 using System.Reflection;
 
-namespace AppHosting.Hosting
+namespace AppHosting.Hosting.Internal
 {
     internal static class AppHostingLoggerExtensions
     {

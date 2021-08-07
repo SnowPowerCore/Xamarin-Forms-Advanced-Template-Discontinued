@@ -1,4 +1,4 @@
-﻿using AppHosting.Abstractions;
+﻿using AppHosting.Abstractions.Internal;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using XamarinFormsAdvancedTemplate.Services.Utils.Analytics;

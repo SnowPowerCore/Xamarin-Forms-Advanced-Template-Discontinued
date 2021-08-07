@@ -20,7 +20,6 @@ namespace XamarinFormsAdvancedTemplate.Models.Utils
             var data = Activator.CreateInstance(type);
             _createdContents.Add(type, data);
             return data;
-        })
-        { }
+        }) { }
     }
 }

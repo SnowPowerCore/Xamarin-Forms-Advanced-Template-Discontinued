@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AppHosting.Abstractions
+namespace AppHosting.Abstractions.Internal
 {
     /// <summary>
     /// Handles registration of events.

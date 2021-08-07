@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Xamarin.Forms;
 using XamarinFormsAdvancedTemplate.Extensions;
+using XamarinFormsAdvancedTemplate.Models.Builders;
 
 namespace XamarinFormsAdvancedTemplate.Services.Utils.Processors
 {
@@ -27,20 +28,16 @@ namespace XamarinFormsAdvancedTemplate.Services.Utils.Processors
             if (modifiedPage.BindingContext != default)
             {
                 var pageAppearingAttr = modifiedPage.GetElementPageAppearingAttribute();
-                if (pageAppearingAttr != default)
-                    modifiedPage = modifiedPage.AssignPageAppearing(pageAppearingAttr);
-
                 var pageDisappearingAttr = modifiedPage.GetElementPageDisappearingAttribute();
-                if (pageDisappearingAttr != default)
-                    modifiedPage = modifiedPage.AssignPageDisappearing(pageDisappearingAttr);
-
                 var commandAttrs = modifiedPage.GetElementCommandAttributes();
-                if (commandAttrs.Length > 0)
-                    modifiedPage = modifiedPage.AssignCommands(commandAttrs);
-
                 var asyncCommandAttrs = modifiedPage.GetElementAsyncCommandAttributes();
-                if (asyncCommandAttrs.Length > 0)
-                    modifiedPage = modifiedPage.AssignAsyncCommands(asyncCommandAttrs);
+
+                modifiedPage = (TPage)PageBuilder
+                    .Init(modifiedPage)
+                    .AddPageAppearing(pageAppearingAttr)
+                    .AddPageDisappearing(pageDisappearingAttr)
+                    .AddCommands(commandAttrs)
+                    .AddAsyncCommands(asyncCommandAttrs);
             }
 
             _processedItems.Add(modifiedPage.Id);

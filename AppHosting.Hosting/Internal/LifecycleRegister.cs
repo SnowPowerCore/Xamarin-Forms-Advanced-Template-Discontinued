@@ -1,10 +1,10 @@
-﻿using AppHosting.Abstractions;
+﻿using AppHosting.Abstractions.Internal;
 using System;
 using System.Collections.Generic;
 
-namespace AppHosting.Hosting
+namespace AppHosting.Hosting.Internal
 {
-    public class LifecycleRegister : ILifecycleRegister
+    internal class LifecycleRegister : ILifecycleRegister
     {
         private readonly HashSet<Action> _callbacks =
             new HashSet<Action>();

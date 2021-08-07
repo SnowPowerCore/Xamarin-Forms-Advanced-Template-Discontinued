@@ -1,4 +1,5 @@
 ﻿using AppHosting.Abstractions;
+using AppHosting.Abstractions.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -35,12 +36,7 @@ namespace AppHosting.Hosting.Extensions
                     }
                     else
                     {
-                        services.AddSingleton(typeof(IAppStartup), sp =>
-                        {
-                            var hostingEnvironment = sp.GetRequiredService<IHostEnvironment>();
-                            return new ConventionBasedStartup(StartupLoader
-                                .LoadMethods(sp, startupType, hostingEnvironment.EnvironmentName));
-                        });
+                        //
                     }
                 });
         }

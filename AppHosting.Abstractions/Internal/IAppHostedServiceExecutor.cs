@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AppHosting.Abstractions
+namespace AppHosting.Abstractions.Internal
 {
     /// <summary>
     /// Defines methods for objects that are managed by the host.

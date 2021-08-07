@@ -16,10 +16,10 @@ namespace AppHosting.Abstractions
         /// Adds a delegate for configuring the <see cref="IConfigurationBuilder"/> that will construct an <see cref="IConfiguration"/>.
         /// </summary>
         /// <param name="configureDelegate">The delegate for configuring the <see cref="IConfigurationBuilder" /> that will be used to construct an <see cref="IConfiguration" />.</param>
-        /// <returns>The <see cref="IWebHostBuilder"/>.</returns>
+        /// <returns>The <see cref="IAppHostBuilder"/>.</returns>
         /// <remarks>
-        /// The <see cref="IConfiguration"/> and <see cref="ILoggerFactory"/> on the <see cref="WebHostBuilderContext"/> are uninitialized at this stage.
-        /// The <see cref="IConfigurationBuilder"/> is pre-populated with the settings of the <see cref="IWebHostBuilder"/>.
+        /// The <see cref="IConfiguration"/> and <see cref="ILoggerFactory"/> on the <see cref="HostBuilderContext"/> are uninitialized at this stage.
+        /// The <see cref="IConfigurationBuilder"/> is pre-populated with the settings of the <see cref="IAppHostBuilder"/>.
         /// </remarks>
         IAppHostBuilder ConfigureAppConfiguration(Action<HostBuilderContext, IConfigurationBuilder> configureDelegate);
 
@@ -28,7 +28,7 @@ namespace AppHosting.Abstractions
         /// multiple times.
         /// </summary>
         /// <param name="configureServices">A delegate for configuring the <see cref="IServiceCollection"/>.</param>
-        /// <returns>The <see cref="IWebHostBuilder"/>.</returns>
+        /// <returns>The <see cref="IAppHostBuilder"/>.</returns>
         IAppHostBuilder ConfigureServices(Action<IServiceCollection> configureServices);
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace AppHosting.Abstractions
         /// multiple times.
         /// </summary>
         /// <param name="configureServices">A delegate for configuring the <see cref="IServiceCollection"/>.</param>
-        /// <returns>The <see cref="IWebHostBuilder"/>.</returns>
+        /// <returns>The <see cref="IAppHostBuilder"/>.</returns>
         IAppHostBuilder ConfigureServices(Action<HostBuilderContext, IServiceCollection> configureServices);
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace AppHosting.Abstractions
         /// </summary>
         /// <param name="key">The key of the setting to add or replace.</param>
         /// <param name="value">The value of the setting to add or replace.</param>
-        /// <returns>The <see cref="IWebHostBuilder"/>.</returns>
+        /// <returns>The <see cref="IAppHostBuilder"/>.</returns>
         IAppHostBuilder UseSetting(string key, string value);
     }
 }
