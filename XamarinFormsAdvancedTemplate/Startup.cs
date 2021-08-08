@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using Xamarin.Forms;
 using XamarinFormsAdvancedTemplate.Services.Utils.Analytics;
+using XamarinFormsAdvancedTemplate.Services.Utils.App;
 using XamarinFormsAdvancedTemplate.Services.Utils.Language;
 using XamarinFormsAdvancedTemplate.Services.Utils.Message;
 using XamarinFormsAdvancedTemplate.Services.Utils.Navigation;
@@ -10,7 +11,7 @@ using XamarinFormsAdvancedTemplate.Services.Utils.Processors;
 using XamarinFormsAdvancedTemplate.Services.Utils.Settings;
 using XamarinFormsAdvancedTemplate.ViewModels;
 using XamarinFormsAdvancedTemplate.Views.Pages;
-using XamarinFormsAdvancedTemplate.Views.Shell;
+using XamarinFormsAdvancedTemplate.Views.Tabbed;
 
 namespace XamarinFormsAdvancedTemplate
 {
@@ -27,10 +28,11 @@ namespace XamarinFormsAdvancedTemplate
         {
             #region Services
             services
+                .AddSingleton<IApplicationService, ApplicationService>()
                 .AddSingleton<IAnalyticsService, AnalyticsService>()
                 .AddSingleton<ILanguageService, LanguageService>()
                 .AddSingleton<IMessageService, MessageService>()
-                .AddSingleton<INavigationService, ShellNavigationService>()
+                .AddSingleton<INavigationService, LegacyTabbedNavigationService>()
                 .AddSingleton<IElementProcessor, ElementProcessor>()
                 .AddSingleton<IShellProcessor, ShellProcessor>()
                 .AddSingleton<IPageProcessor, PageProcessor>()
@@ -43,7 +45,7 @@ namespace XamarinFormsAdvancedTemplate
 
             #region Application
                 .AddSingleton<App>()
-                .AddSingleton<AppShell>();
+                .AddSingleton<AppTabbedPage>();
             #endregion
 
             return services.BuildServiceProvider();

@@ -40,7 +40,7 @@ namespace XamarinFormsAdvancedTemplate.Models.Utils
         /// <param name="parameter">
         /// Data used by the command. If the command does not require data to be passed, this object can be set to null.
         /// </param>
-        public void Execute(object parameter)
+        public void Execute(object? parameter)
         {
             Interlocked.Exchange(ref _isExecuting, 1);
             RaiseCanExecuteChanged();

@@ -33,7 +33,7 @@ namespace XamarinFormsAdvancedTemplate.ViewModels
             return Task.CompletedTask;
         }
 
-        public void InterestingCommand(string parameter)
+        public void InterestingCommand()
         {
             for (var i = 0; i < 100000; i++)
             {
@@ -44,7 +44,7 @@ namespace XamarinFormsAdvancedTemplate.ViewModels
             }
         }
 
-        public async Task InterestingCommandAsync(string parameter)
+        public async Task InterestingCommandAsync()
         {
             await _navigation.NavigateToPageAsync("otherPage");
         }

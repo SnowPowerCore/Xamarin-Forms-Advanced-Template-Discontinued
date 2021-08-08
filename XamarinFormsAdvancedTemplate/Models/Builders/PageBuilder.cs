@@ -1,5 +1,4 @@
 ﻿using AsyncAwaitBestPractices;
-using AsyncAwaitBestPractices.MVVM;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -165,12 +164,14 @@ namespace XamarinFormsAdvancedTemplate.Models.Builders
                 var exceptionMethod = bindingContextType
                     .GetMethod(commandAttr.OnException);
 
-                var command = new AsyncRelayCommand<object>(obj =>
-                {
-                    return method.GetParameters().Count() <= 0
-                    ? (Task)method.Invoke(bindingContext, new object[] { })
-                    : (Task)method.Invoke(bindingContext, new object[] { obj });
-                }, onException: obj => exceptionMethod?.Invoke(bindingContext, new object[] { obj }),
+                var command = new AsyncRelayCommand<object>(
+                    obj =>
+                    {
+                        return method.GetParameters().Count() <= 0
+                            ? (Task)method.Invoke(bindingContext, new object[] { })
+                            : (Task)method.Invoke(bindingContext, new object[] { obj });
+                    },
+                    onException: obj => exceptionMethod?.Invoke(bindingContext, new object[] { obj }),
                     continueOnCapturedContext: commandAttr.ContinueOnCapturedContext);
 
                 commandProp.SetValue(control, command);

@@ -1,40 +1,27 @@
 ﻿using AppHosting.Abstractions.Internal;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
-using XamarinFormsAdvancedTemplate.Services.Utils.Analytics;
-using XamarinFormsAdvancedTemplate.Services.Utils.Language;
-using XamarinFormsAdvancedTemplate.Services.Utils.Navigation;
-using XamarinFormsAdvancedTemplate.Views.Shell;
+using XamarinFormsAdvancedTemplate.Services.Utils.App;
+using XamarinFormsAdvancedTemplate.Views.Tabbed;
 using Application = Xamarin.Forms.Application;
 
 namespace XamarinFormsAdvancedTemplate
 {
     public partial class App : Application
     {
-        #region Fields
-        private readonly ILanguageService _language;
-        private readonly INavigationService _navigation;
-        private readonly IAnalyticsService _analytics;
+        private readonly IApplicationService _application;
         private readonly IAppHostLifetime _appHostLifetime;
-        #endregion
 
-        #region Constructor
-        public App(ILanguageService language,
-                   INavigationService navigation,
-                   IAnalyticsService analytics,
+        public App(IApplicationService application,
                    IAppHostLifetime appHostLifetime)
         {
 
-            _language = language;
-            _navigation = navigation;
-            _analytics = analytics;
+            _application = application;
             _appHostLifetime = appHostLifetime;
 
             InitApp();
         }
-        #endregion
 
-        #region Methods
         private void InitApp()
         {
             InitializeComponent();
@@ -47,9 +34,7 @@ namespace XamarinFormsAdvancedTemplate
         {
             base.OnStart();
 
-            _language.DetermineAndSetLanguage();
-            _navigation.DetermineAndSetMainPage<AppShell>();
-            _analytics.TrackEvent("App started.");
+            _application.InitializeApplication<AppTabbedPage>();
         }
 
         protected override void OnResume()
@@ -63,6 +48,5 @@ namespace XamarinFormsAdvancedTemplate
             _appHostLifetime.NotifySleeping();
             base.OnSleep();
         }
-        #endregion
     }
 }
