@@ -42,43 +42,55 @@ namespace XamarinFormsAdvancedTemplate.Models.Utils
         /// <param name="parameter">Data used by the command. If the command does not require data to be passed, this object can be set to null.</param>
         private protected Task ExecuteAsync(TExecute parameter) => _execute(parameter);
 
-        bool ICommand.CanExecute(object parameter) => parameter switch
+        public bool CanExecute(object parameter) => parameter switch
         {
-            TCanExecute validParameter => CanExecute(validParameter),
-            null when IsNullable<TCanExecute>() => CanExecute((TCanExecute)parameter),
+            TCanExecute validParameter => base.CanExecute(validParameter),
+            null when IsNullable<TCanExecute>() => base.CanExecute((TCanExecute)parameter),
             null => throw new InvalidCommandParameterException(typeof(TCanExecute)),
             _ => throw new InvalidCommandParameterException(typeof(TCanExecute), parameter.GetType()),
         };
 
-        void ICommand.Execute(object? parameter)
+        public void Execute(object? parameter)
         {
             Interlocked.Exchange(ref _isExecuting, 1);
             RaiseCanExecuteChanged();
-            try
+            switch (parameter)
             {
-                switch (parameter)
-                {
-                    case TExecute validParameter:
-                        ExecuteAsync(validParameter)
-                            .SafeFireAndForget(_onException, _continueOnCapturedContext);
-                        break;
+                case TExecute validParameter:
+                    ExecuteAsync(validParameter)
+                        .ContinueWith(t =>
+                        {
+                            Interlocked.Exchange(ref _isExecuting, 0);
+                            RaiseCanExecuteChanged();
+                        }, TaskContinuationOptions.NotOnFaulted)
+                        .SafeFireAndForget(e =>
+                        {
+                            Interlocked.Exchange(ref _isExecuting, 0);
+                            RaiseCanExecuteChanged();
+                            _onException?.Invoke(e);
+                        }, _continueOnCapturedContext);
+                    break;
 
-                    case null when IsNullable<TExecute>():
-                        ExecuteAsync((TExecute)parameter)
-                            .SafeFireAndForget(_onException, _continueOnCapturedContext);
-                        break;
+                case null when IsNullable<TExecute>():
+                    ExecuteAsync((TExecute)parameter)
+                        .ContinueWith(t =>
+                        {
+                            Interlocked.Exchange(ref _isExecuting, 0);
+                            RaiseCanExecuteChanged();
+                        }, TaskContinuationOptions.NotOnFaulted)
+                        .SafeFireAndForget(e =>
+                        {
+                            Interlocked.Exchange(ref _isExecuting, 0);
+                            RaiseCanExecuteChanged();
+                            _onException?.Invoke(e);
+                        }, _continueOnCapturedContext);
+                    break;
 
-                    case null:
-                        throw new InvalidCommandParameterException(typeof(TExecute));
+                case null:
+                    throw new InvalidCommandParameterException(typeof(TExecute));
 
-                    default:
-                        throw new InvalidCommandParameterException(typeof(TExecute), parameter.GetType());
-                }
-            }
-            finally
-            {
-                Interlocked.Exchange(ref _isExecuting, 0);
-                RaiseCanExecuteChanged();
+                default:
+                    throw new InvalidCommandParameterException(typeof(TExecute), parameter.GetType());
             }
         }
     }
