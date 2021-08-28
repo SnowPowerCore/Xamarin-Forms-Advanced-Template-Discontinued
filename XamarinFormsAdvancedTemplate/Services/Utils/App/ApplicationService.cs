@@ -1,7 +1,7 @@
-﻿using Xamarin.Forms;
+﻿using AppHosting.Xamarin.Forms.Abstractions.Interfaces.Services.Navigation;
+using Xamarin.Forms;
 using XamarinFormsAdvancedTemplate.Services.Utils.Analytics;
 using XamarinFormsAdvancedTemplate.Services.Utils.Language;
-using XamarinFormsAdvancedTemplate.Services.Utils.Navigation;
 
 namespace XamarinFormsAdvancedTemplate.Services.Utils.App
 {

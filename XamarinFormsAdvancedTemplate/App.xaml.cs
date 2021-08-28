@@ -1,4 +1,4 @@
-﻿using AppHosting.Abstractions.Internal;
+﻿using AppHosting.Abstractions.Interfaces;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using XamarinFormsAdvancedTemplate.Services.Utils.App;
@@ -18,20 +18,16 @@ namespace XamarinFormsAdvancedTemplate
 
             _application = application;
             _appHostLifetime = appHostLifetime;
-
-            InitApp();
-        }
-
-        private void InitApp()
-        {
-            InitializeComponent();
-            Current
-                .On<Android>()
-                .UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
         }
 
         protected override void OnStart()
         {
+            InitializeComponent();
+
+            Current
+                .On<Android>()
+                .UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
+
             base.OnStart();
 
             _application.InitializeApplication<AppTabbedPage>();
@@ -40,12 +36,14 @@ namespace XamarinFormsAdvancedTemplate
         protected override void OnResume()
         {
             _appHostLifetime.NotifyResuming();
+
             base.OnResume();
         }
 
         protected override void OnSleep()
         {
             _appHostLifetime.NotifySleeping();
+
             base.OnSleep();
         }
     }

@@ -1,8 +1,8 @@
-﻿using PropertyChanged;
+﻿using AppHosting.Xamarin.Forms.Abstractions.Interfaces.Services.Navigation;
+using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using XamarinFormsAdvancedTemplate.Services.Utils.Navigation;
 
 namespace XamarinFormsAdvancedTemplate.ViewModels
 {

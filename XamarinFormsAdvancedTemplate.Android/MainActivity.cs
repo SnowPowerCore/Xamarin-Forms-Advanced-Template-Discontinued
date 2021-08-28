@@ -1,9 +1,9 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using AppHosting.Abstractions;
+using AppHosting.Abstractions.Interfaces;
 using AppHosting.Hosting;
-using AppHosting.Hosting.Extensions;
+using AppHosting.Xamarin.Forms.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using XamarinFormsAdvancedTemplate.Android.Implementations;
 using XamarinFormsAdvancedTemplate.Services.Interfaces;
@@ -34,9 +34,10 @@ namespace XamarinFormsAdvancedTemplate.Android
 
         public IAppHostBuilder CreateMobileHostBuilder() =>
             AppHost
-                .CreateDefaultAppBuilder(default)
+                .CreateDefaultAppBuilder<Startup>(default)
                 .ConfigureServices(ConfigureNativeServices)
-                .UseStartup<Startup>();
+                .UseAppVisualProcessor()
+                .UseLegacyTabbedNavigation();
 
         private void ConfigureNativeServices(IServiceCollection services)
         {
