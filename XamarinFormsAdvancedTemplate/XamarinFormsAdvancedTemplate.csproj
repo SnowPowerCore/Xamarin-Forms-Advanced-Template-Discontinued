@@ -15,8 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AppHosting.Abstractions" Version="1.0.0" />
-    <PackageReference Include="AppHosting.Hosting" Version="1.0.0" />
     <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.0" />
     <PackageReference Include="Fody" Version="6.5.2">
       <PrivateAssets>all</PrivateAssets>
@@ -58,6 +56,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\AppHosting\AppHosting.Hosting\AppHosting.Hosting.csproj" />
+    <ProjectReference Include="..\..\AppHosting\AppHosting.Xamarin.Forms\AppHosting.Xamarin.Forms.csproj" />
   </ItemGroup>
 
   <ItemGroup>

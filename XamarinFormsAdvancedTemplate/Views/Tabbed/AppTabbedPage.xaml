@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <controls:HostedTabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
                            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                           xmlns:controls="clr-namespace:XamarinFormsAdvancedTemplate.Controls"
+                           xmlns:controls="clr-namespace:AppHosting.Xamarin.Forms.Controls;assembly=AppHosting.Xamarin.Forms"
                            xmlns:pages="clr-namespace:XamarinFormsAdvancedTemplate.Views.Pages"
                            x:Class="XamarinFormsAdvancedTemplate.Views.Tabbed.AppTabbedPage">
     <NavigationPage>

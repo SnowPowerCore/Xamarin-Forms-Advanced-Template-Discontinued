@@ -113,8 +113,20 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\AppHosting\AppHosting.Abstractions\AppHosting.Abstractions.csproj">
+      <Project>{B093A91F-88A5-448D-AED0-3C0086AF6005}</Project>
+      <Name>AppHosting.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AppHosting\AppHosting.Hosting\AppHosting.Hosting.csproj">
+      <Project>{3C57E51B-A84E-4E2D-A29B-6B3A74F2DC28}</Project>
+      <Name>AppHosting.Hosting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AppHosting\AppHosting.Xamarin.Forms\AppHosting.Xamarin.Forms.csproj">
+      <Project>{2ded468f-2f50-456b-afca-92e848e5fdb1}</Project>
+      <Name>AppHosting.Xamarin.Forms</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XamarinFormsAdvancedTemplate\XamarinFormsAdvancedTemplate.csproj">
-      <Project>{2CDEAC70-48EA-46DC-AA98-476DD96CAA29}</Project>
+      <Project>{5cc8e011-6f11-4530-af8c-2e60b8afe6b2}</Project>
       <Name>XamarinFormsAdvancedTemplate</Name>
     </ProjectReference>
   </ItemGroup>

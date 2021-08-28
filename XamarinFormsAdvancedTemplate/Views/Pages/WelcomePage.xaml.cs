@@ -1,4 +1,4 @@
-﻿using XamarinFormsAdvancedTemplate.Attributes;
+﻿using AppHosting.Xamarin.Forms.Attributes;
 using XamarinFormsAdvancedTemplate.ViewModels;
 
 namespace XamarinFormsAdvancedTemplate.Views.Pages
