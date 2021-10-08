@@ -41,10 +41,10 @@ namespace XamarinFormsAdvancedTemplate.Android
 
         private void ConfigureNativeServices(IServiceCollection services)
         {
-            services.AddSingleton(typeof(ILocalizeService), typeof(LocalizeService));
-            services.AddSingleton(typeof(IAppQuit), typeof(AppQuit));
-            services.AddSingleton(typeof(IToast), typeof(Toast));
-            services.AddSingleton(typeof(IKeyboard), typeof(Keyboard));
+            services.AddSingleton<ILocalizeService, LocalizeService>();
+            services.AddSingleton<IAppQuit, AppQuit>();
+            services.AddSingleton<IToast, Toast>();
+            services.AddSingleton<IKeyboard, Keyboard>();
         }
 
         public override void OnBackPressed() =>
