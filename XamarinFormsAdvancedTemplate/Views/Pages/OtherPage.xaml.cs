@@ -3,7 +3,7 @@ using XamarinFormsAdvancedTemplate.ViewModels;
 
 namespace XamarinFormsAdvancedTemplate.Views.Pages
 {
-    [BindingContext(typeof(WelcomeViewModel))]
+    [BindingContext(typeof(AppleViewModel))]
     public partial class OtherPage
     {
         public OtherPage() =>

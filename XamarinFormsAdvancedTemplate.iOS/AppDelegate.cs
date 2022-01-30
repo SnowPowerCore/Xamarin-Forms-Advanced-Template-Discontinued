@@ -1,6 +1,6 @@
-﻿using AppHosting.Abstractions;
+﻿using AppHosting.Abstractions.Interfaces;
 using AppHosting.Hosting;
-using AppHosting.Hosting.Extensions;
+using AppHosting.Xamarin.Forms.Extensions;
 using Foundation;
 using Microsoft.Extensions.DependencyInjection;
 using UIKit;
@@ -9,7 +9,7 @@ using XamarinFormsAdvancedTemplate.Services.Interfaces;
 
 namespace XamarinFormsAdvancedTemplate.iOS
 {
-    [Register("AppDelegate")]
+    [Register(nameof(AppDelegate))]
     public partial class AppDelegate : Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
     {
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
@@ -21,14 +21,16 @@ namespace XamarinFormsAdvancedTemplate.iOS
 
             var appHost = CreateMobileHostBuilder().Build();
             LoadApplication(appHost.Start<App>());
+
             return base.FinishedLaunching(app, options);
         }
 
         public IAppHostBuilder CreateMobileHostBuilder() =>
             AppHost
-                .CreateDefaultAppBuilder(null)
+                .CreateDefaultAppBuilder<Startup>(default)
                 .ConfigureServices(ConfigureNativeServices)
-                .UseStartup<Startup>();
+                .UseAppVisualProcessor()
+                .UseLegacyTabbedNavigation();
 
         private void ConfigureNativeServices(IServiceCollection services)
         {

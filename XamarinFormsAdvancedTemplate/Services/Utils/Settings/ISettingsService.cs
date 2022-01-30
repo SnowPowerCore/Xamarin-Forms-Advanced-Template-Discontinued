@@ -1,21 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using XamarinFormsAdvancedTemplate.Models;
 
 namespace XamarinFormsAdvancedTemplate.Services.Utils.Settings
 {
     public interface ISettingsService
     {
-        string ProjectName { get; }
-
-        string SupportNumber { get; }
-
-        string SupportEmail { get; }
-
-        string DefaultApiUrl { get; }
-
-        string AppCenterAndroidKey { get; }
-
-        string AppCenteriOSKey { get; }
+        AppSettings Settings { get; }
 
         bool ContainsKey(string key);
 

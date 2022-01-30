@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<page:BasePageView xmlns="http://xamarin.com/schemas/2014/forms"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                   xmlns:dataTemplates="clr-namespace:AppHosting.Xamarin.Forms.Utils.DataTemplate;assembly=AppHosting.Xamarin.Forms"
+                   xmlns:wrappers="clr-namespace:AppHosting.Xamarin.Forms.Utils.Wrappers;assembly=AppHosting.Xamarin.Forms"
+                   xmlns:loader="clr-namespace:Sharpnado.Presentation.Forms.CustomViews;assembly=Sharpnado.TaskLoaderView"
+                   xmlns:vms="clr-namespace:XamarinFormsAdvancedTemplate.ViewModels"
+                   xmlns:page="clr-namespace:XamarinFormsAdvancedTemplate.Views.Pages"
+                   xmlns:sharedViews="clr-namespace:XamarinFormsAdvancedTemplate.Views.Shared"
+                   x:Class="XamarinFormsAdvancedTemplate.Views.Pages.AppleListPage"
+                   x:Name="appleList" x:DataType="vms:AppleViewModel">
+    <loader:TaskLoaderView TaskLoaderNotifier="{Binding ApplesLoader, Mode=OneTime}"
+                           AccentColor="WhiteSmoke" CompressedLayout.IsHeadless="True">
+        <RefreshView Command="{Binding ApplesLoader.RefreshCommand, Mode=OneTime}"
+                     IsRefreshing="{Binding ApplesLoader.ShowRefresher, Mode=OneWay}">
+            <CollectionView ItemsSource="{Binding ApplesLoader.Result, Mode=OneWay}"
+                            ItemSizingStrategy="MeasureFirstItem">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="9"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <dataTemplates:HostedDataTemplate>
+                        <x:Arguments>
+                            <wrappers:TypeWrapper Type="{x:Type sharedViews:AppleListItem}"
+                                                  Parent="{x:Reference appleList}"/>
+                        </x:Arguments>
+                    </dataTemplates:HostedDataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </loader:TaskLoaderView>
+</page:BasePageView>
