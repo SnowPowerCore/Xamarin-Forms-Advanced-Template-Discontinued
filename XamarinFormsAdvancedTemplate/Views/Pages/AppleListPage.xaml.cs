@@ -4,9 +4,11 @@ using XamarinFormsAdvancedTemplate.ViewModels;
 namespace XamarinFormsAdvancedTemplate.Views.Pages
 {
     [BindingContext(typeof(AppleViewModel))]
-    public partial class OtherPage
+    [PageAppearing(nameof(AppleViewModel.ApplesPageAppearingAsync))]
+    [PageDisappearing(nameof(AppleViewModel.ApplesPageDisappearingAsync))]
+    public partial class AppleListPage
     {
-        public OtherPage() =>
+        public AppleListPage() =>
             InitializeComponent();
     }
 }

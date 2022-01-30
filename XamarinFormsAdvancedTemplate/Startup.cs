@@ -3,8 +3,9 @@ using AppHosting.Xamarin.Forms.Abstractions.Interfaces.Builders;
 using AppHosting.Xamarin.Forms.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Xamarin.Forms;
+using XamarinFormsAdvancedTemplate.Services.Apple;
 using XamarinFormsAdvancedTemplate.Services.Utils.Analytics;
-using XamarinFormsAdvancedTemplate.Services.Utils.App;
+using XamarinFormsAdvancedTemplate.Services.Utils.Application;
 using XamarinFormsAdvancedTemplate.Services.Utils.Language;
 using XamarinFormsAdvancedTemplate.Services.Utils.Message;
 using XamarinFormsAdvancedTemplate.Services.Utils.Settings;
@@ -29,12 +30,15 @@ namespace XamarinFormsAdvancedTemplate
 
             services
                 .AddSingleton<IApplicationService, ApplicationService>()
+                .AddSingleton<IApplicationInfrastructureService, ApplicationInfrastructureService>()
+                .AddSingleton<IApplicationTrackingService, ApplicationTrackingService<App>>()
                 .AddSingleton<IAnalyticsService, AnalyticsService>()
                 .AddSingleton<ILanguageService, LanguageService>()
                 .AddSingleton<IMessageService, MessageService>()
                 .AddSingleton<ISettingsService, SettingsService>()
+                .AddSingleton<IAppleService, AppleService>()
 
-                .AddSingleton<WelcomeViewModel>()
+                .AddSingleton<AppleViewModel>()
 
                 .AddSingleton<App>()
                 .AddSingleton<AppTabbedPage>();
@@ -68,7 +72,8 @@ namespace XamarinFormsAdvancedTemplate
         public void RegisterRoutes()
         {
             //Routes
-            Routing.RegisterRoute("welcomePage", typeof(WelcomePage));
+            Routing.RegisterRoute("appleListPage", typeof(AppleListPage));
+            Routing.RegisterRoute("appleDetailPage", typeof(AppleDetailPage));
             Routing.RegisterRoute("otherPage", typeof(OtherPage));
         }
     }

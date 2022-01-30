@@ -1,12 +1,8 @@
-﻿using Xamarin.Forms;
-
-namespace XamarinFormsAdvancedTemplate.Views.Pages
+﻿namespace XamarinFormsAdvancedTemplate.Views.Pages
 {
-    public partial class BasePageView : ContentPage
+    public partial class BasePageView
     {
-        public BasePageView()
-        {
+        public BasePageView() =>
             InitializeComponent();
-        }
     }
 }

@@ -6,16 +6,16 @@
                       xmlns:wrappers="clr-namespace:AppHosting.Xamarin.Forms.Utils.Wrappers;assembly=AppHosting.Xamarin.Forms"
                       xmlns:pages="clr-namespace:XamarinFormsAdvancedTemplate.Views.Pages"
                       x:Class="XamarinFormsAdvancedTemplate.Views.Shell.AppShell">
-    <ShellContent x:Name="welcomePage" Route="welcomePage">
+    <ShellContent x:Name="welcomePage" Title="Apples" Route="appleListPage">
         <ShellContent.ContentTemplate>
             <utils:MemorizedDataTemplate>
                 <x:Arguments>
-                    <wrappers:TypeWrapper Type="{x:Type pages:WelcomePage}"/>
+                    <wrappers:TypeWrapper Type="{x:Type pages:AppleListPage}"/>
                 </x:Arguments>
             </utils:MemorizedDataTemplate>
         </ShellContent.ContentTemplate>
     </ShellContent>
-    <ShellContent x:Name="otherPage" Route="otherPage">
+    <ShellContent x:Name="otherPage" Title="Other page" Route="otherPage">
         <ShellContent.ContentTemplate>
             <utils:MemorizedDataTemplate>
                 <x:Arguments>

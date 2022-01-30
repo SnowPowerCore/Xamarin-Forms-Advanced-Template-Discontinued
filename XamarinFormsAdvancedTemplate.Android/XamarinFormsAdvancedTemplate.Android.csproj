@@ -74,12 +74,12 @@
       <Version>0.0.7.3</Version>
     </PackageReference>
     <PackageReference Include="glidex.forms">
-      <Version>2.1.0.470</Version>
+      <Version>2.1.1.648</Version>
     </PackageReference>
     <PackageReference Include="Rg.Plugins.Popup">
-      <Version>2.0.0.12</Version>
+      <Version>2.0.0.14</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2083" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2337" />
     <PackageReference Include="XamEffects">
       <Version>1.6.3</Version>
     </PackageReference>

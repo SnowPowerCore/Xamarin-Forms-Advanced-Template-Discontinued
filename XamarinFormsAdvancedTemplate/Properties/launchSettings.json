@@ -1,10 +1,7 @@
 {
   "profiles": {
     "XamarinFormsAdvancedTemplate": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "XAMARIN_ENVIRONMENT": "Debug"
-      }
+      "commandName": "Project"
     }
   }
 }

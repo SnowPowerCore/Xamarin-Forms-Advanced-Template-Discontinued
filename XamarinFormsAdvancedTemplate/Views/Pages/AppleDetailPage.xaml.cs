@@ -4,9 +4,9 @@ using XamarinFormsAdvancedTemplate.ViewModels;
 namespace XamarinFormsAdvancedTemplate.Views.Pages
 {
     [BindingContext(typeof(AppleViewModel))]
-    public partial class OtherPage
+    public partial class AppleDetailPage
     {
-        public OtherPage() =>
+        public AppleDetailPage() =>
             InitializeComponent();
     }
 }

@@ -18,7 +18,7 @@ namespace XamarinFormsAdvancedTemplate.Services.Utils.Analytics
         }
 
         private void Init() =>
-            AppCenter.Start(_settings.AppCenterAndroidKey + _settings.AppCenteriOSKey,
+            AppCenter.Start(_settings.Settings.AppCenterAndroidKey + _settings.Settings.AppCenteriOSKey,
                 typeof(Microsoft.AppCenter.Crashes.Crashes),
                 typeof(Microsoft.AppCenter.Analytics.Analytics));
 

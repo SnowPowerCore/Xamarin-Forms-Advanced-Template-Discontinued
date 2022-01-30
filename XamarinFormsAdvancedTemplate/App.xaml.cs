@@ -1,7 +1,7 @@
 ﻿using AppHosting.Abstractions.Interfaces;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
-using XamarinFormsAdvancedTemplate.Services.Utils.App;
+using XamarinFormsAdvancedTemplate.Services.Utils.Application;
 using XamarinFormsAdvancedTemplate.Views.Tabbed;
 using Application = Xamarin.Forms.Application;
 
@@ -28,23 +28,17 @@ namespace XamarinFormsAdvancedTemplate
                 .On<Android>()
                 .UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
 
-            base.OnStart();
-
             _application.InitializeApplication<AppTabbedPage>();
         }
 
         protected override void OnResume()
         {
             _appHostLifetime.NotifyResuming();
-
-            base.OnResume();
         }
 
         protected override void OnSleep()
         {
             _appHostLifetime.NotifySleeping();
-
-            base.OnSleep();
         }
     }
 }

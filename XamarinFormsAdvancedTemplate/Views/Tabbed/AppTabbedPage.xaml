@@ -4,12 +4,12 @@
                            xmlns:controls="clr-namespace:AppHosting.Xamarin.Forms.Controls;assembly=AppHosting.Xamarin.Forms"
                            xmlns:pages="clr-namespace:XamarinFormsAdvancedTemplate.Views.Pages"
                            x:Class="XamarinFormsAdvancedTemplate.Views.Tabbed.AppTabbedPage">
-    <NavigationPage>
+    <NavigationPage Title="Apples">
         <x:Arguments>
-            <pages:WelcomePage Routing.Route="welcomePage"/>
+            <pages:AppleListPage Routing.Route="appleListPage"/>
         </x:Arguments>
     </NavigationPage>
-    <NavigationPage>
+    <NavigationPage Title="Other page">
         <x:Arguments>
             <pages:OtherPage Routing.Route="otherPage"/>
         </x:Arguments>
