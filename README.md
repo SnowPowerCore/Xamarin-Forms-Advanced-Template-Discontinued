@@ -1,27 +1,27 @@
-# Xamarin Forms Advanced Template v. 2
-Xamarin.Forms template. Packed with the most useful things for the developer.
-**Updated to second version - please, read description**. Feel free to contribute or create issues for this project.
+# Xamarin.Forms Advanced Template v3.0
+Xamarin.Forms template for Visual Studio. Packed with [AppHosting](https://github.com/SnowPowerCore/AppHosting) library + some must-haves for every developer.
+
+**Introducing third version: featuring AppHosting library!** 
+(if you wish to review previous version, navigate to the [releases/v2](https://github.com/SnowPowerCore/Xamarin-Forms-Advanced-Template/tree/releases/v2) branch).
+
+Feel free to contribute or create issues for this project.
 
 ### Description
 
 Zip file is a template package. It contains:
-* **AppSettings.json** `(for constants & useful data, retrieve easily with IConfiguration)`
-* **Environments** `(for clear env separation)`
-* **Microsoft Extensions** `(Host, DI, Logging)`
-* **Helpers** `(event-to-command behaviour, image resource, translate, viewmodel locator)`
+* **[AppHosting](https://github.com/SnowPowerCore/AppHosting)** `(full-fledged dependency container with Xamarin.Forms integration)`
 * **Async commands** `(via AsyncAwaitBestPractices.MVVM library)`
-* **Resources** `(with small amount of common info)`
-* **Utility & crossplatform services**
+* **Helpers** `(event-to-command behaviour, image resource, translate, viewmodel locator)`
+* **Resources** `(with small amount of pre-installed common labels)`
+* **Utility & cross-platform services**
 * **Better API management** `(via Refit library)`
-* **Base viewmodel**
 * **Base page view**
-* **Xamarin.Forms Shell**
-* **Ripple effects & attached commands** `(via XamEffects library)`
+* **Xamarin.Forms Shell & Legacy Tabbed Page** `(Tabbed page by default)`
+* **Ripple effects** `(via XamEffects library)`
+* **Task loader mechanism & view** `(via Sharpnado.TaskLoaderView library)`
 * **Analytics & diagnostics** `(via AppCenter libraries)`
 * **Image better handling** `(via glidex.forms library on Android & Xamarin.Forms.Nuke library on iOS)`
-* **Modified **`App.xaml.cs`** file**
-* **Startup (configure) file**
-* **Android & iOS preconfigured projects**
+* **Android & iOS pre-configured projects**
 * **Startup tracing & LLVM enabled for Android**
 
 ### Installation
@@ -31,13 +31,17 @@ If you're not using VS for Windows, or prefer another IDE, please, consider clon
 
 ### In-depth overview
 
-> **AppSettings.json** `(for constants & useful data, retrieve easily with IConfiguration)`
+> **[AppHosting](https://github.com/SnowPowerCore/AppHosting)** `(full-fledged dependency container with Xamarin.Forms integration)`
 
-You can store any setting or public data within this .json file. There are two files, each will be used in a particular mode - debug & release. Retrieve data from injecting IConfiguration into any place of the code.
+Featuring brand new library that's going to help you structure your Xamarin.Forms mobile architecture in a better way.
 
-> **Microsoft Extensions** `(Host, DI, Logging)`
+***
 
-Host from the [Microsoft.Extensions.Hosting](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/host/generic-host) provides ability to store dependencies & other settings. You register new dependencies and retrieve them via [Microsoft.Extensions.DependencyInjection](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection). Optionally, setup logging using [Microsoft.Extensions.Logging](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/).
+> **Async commands** `(via AsyncAwaitBestPractices.MVVM library)`
+
+Async commands let you avoid using `async void` in your code and provide some useful additional setup elements. Read more [here](https://github.com/brminnick/AsyncAwaitBestPractices).
+
+***
 
 > **Helpers** `(event-to-command behaviour, image resource, translate, viewmodel locator)`
 
@@ -51,15 +55,15 @@ Some useful helpers to let you build more fluent & productive app.
 
 `ViewModelLocator` is intended for wiring your page with desired viewmodel. It's better to consume all of the helpers from the `XAML` code.
 
-> **Async commands** `(via AsyncAwaitBestPractices.MVVM library)`
+***
 
-Async commands let you avoid using `async void` in your code and provide some useful additional setup elements. Read more [here](https://github.com/brminnick/AsyncAwaitBestPractices).
+> **Resources** `(with small amount of pre-installed common labels)`
 
-> **Resources** `(with small amount of common info)`
+Pre-configured resources folder. `AppResources.resx` is language neutral. You should add `AppResources.[TwoLetterLanguageISOCode].resx` in order to provide translation (add new file into the same folder where you have `AppResources.resx` defined).
 
-Pre-configured resources folder. `AppResources.resx` is language neutral. You should add `AppResources.[TwoLetterLanguageISOCode].resx` in order to provide translation.
+***
 
-> **Utility & crossplatform services**
+> **Utility & cross-platform services**
 
 Common application services. They may make your life as a developer a little easier.
 
@@ -71,57 +75,65 @@ Common application services. They may make your life as a developer a little eas
 
 `Toast` is a service for displaying toast messages.
 
+`Application`, `ApplicationInfrastructure` and `ApplicationTracking` are services for handling respective application parts. `Application` service is just a convenient aggregator.
+
 `Analytics` is a service for tracking errors and events inside of your app with the help of **AppCenter**.
 
 `Language` is a service for managing in-app languages & cultures.
 
 `Message` is a service which displays different types of dialogs with different content.
 
-`LegacyNavigation` is a service which is intended to be used throughout the application as a navigation provider. It's a classic navigation service with Xamarin.Forms Shell's routing support (you can pass data through QueryParameter attributes, just like with Shell).
-
-`ShellNavigation` is a service which is intended to be used throughout the application as a navigation provider. It's a Shell navigation service.
-
 `Settings` is a service for storing & managing in-app key-values.
+
+***
 
 > **Better API management** `(via Refit library)`
 
 This library is great for declaring API. Read more [here](https://github.com/reactiveui/refit).
 
+***
+
 > **Base page view**
 
 Base page view. You have to set viewmodel using `ViewModelType` property (pass a type).
 
-> **Base viewmodel**
+***
 
-Base viewmodel with INotifyPropertyChanged implementation.
+> **Xamarin.Forms Shell & Legacy Tabbed Page** `(Tabbed page by default)`
 
-> **Xamarin.Forms Shell**
+Choose the preferred way of navigation and use it along with `AppHosting` integration.
 
-A new, modern way to organize & structure application navigation. Read more [here](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/shell/).
+***
 
-> **Ripple effects & attached commands** `(via XamEffects library)`
+> **Ripple effects** `(via XamEffects library)`
 
 Read more [here](https://github.com/mrxten/XamEffects).
+
+***
+
+> **Task loader mechanism & view** `(via Sharpnado.TaskLoaderView library)`
+
+Amazing way to keep your `ViewModel` clean and fresh. Read more [here](https://github.com/roubachof/Sharpnado.TaskLoaderView).
+
+***
 
 > **Analytics & diagnostics** `(via AppCenter libraries)`
 
 AppCenter tracks analytics & diagnostics data. Read more [here](https://docs.microsoft.com/en-us/appcenter/dashboard/).
 
+***
+
 > **Image better handling** `(via glidex.forms library on Android & Xamarin.Forms.Nuke library on iOS)`
 
 Read more [here](https://github.com/roubachof/Xamarin.Forms.Nuke).
 
-> **Modified **`App.xaml.cs`** file**
+***
 
-`App.xaml.cs` with a little setup. `Services` store static property is present here. Also, contains some adjustments with keyboard & other services.
+> **Android & iOS pre-configured projects**
 
-> **Startup (configure) file**
+Android & iOS have already been pre-configured to use `AppHosting` library & provide native services. Also, Android has a slightly edited `.csproj` file for better performance.
 
-`Startup.cs` is an entry point for your app. You should retrieve shared `App` class from `Init` method inside your platform-specific class and provide a collection of native services implementation. Also, here you register all your dependencies & routes (for Xamarin.Forms Shell).
-
-> **Android & iOS preconfigured projects**
-
-Android & iOS have already been preconfigured to use `Startup` class & provide native services. Also, Android has a slightly edited   `.csproj` file for a better performance.
+***
 
 > **Startup tracing & LLVM enabled for Android**
 
