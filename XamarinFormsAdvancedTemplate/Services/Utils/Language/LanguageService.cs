@@ -14,8 +14,8 @@ namespace XamarinFormsAdvancedTemplate.Services.Utils.Language
 
         private static Dictionary<string, string> LanguageCulturePairs => new Dictionary<string, string>()
         {
-            { "en", "en-US" },
-            { "ru", "ru-RU" }
+            ["en"] = "en-US",
+            ["ru"] = "ru-RU"
         };
 
         public string Current { get; private set; } = _default;

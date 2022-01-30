@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,7 +13,7 @@ namespace XamarinFormsAdvancedTemplate.Helpers
         {
             if (Source == null)
                 return null;
-            return ImageSource.FromResource(Source, typeof(ImageResourceExtension).GetTypeInfo().Assembly);
+            return ImageSource.FromResource(Source, typeof(ImageResourceExtension).Assembly);
         }
     }
 }

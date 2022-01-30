@@ -1,0 +1,17 @@
+﻿[
+  {
+    "name": "Granny Smith",
+    "color": "#a8e4a0",
+    "description": "Granny Smith apples are the light green superstar in the grocery store. They are crisp and a little tart, so they taste delicious with sweet dips, but you can also pair them with savor dishes. Their peak season is during October and November. Because they are firm with tough skin, they’re a very versatile kitchen ingredient."
+  },
+  {
+    "name": "Fuji",
+    "color": "#d90735",
+    "description": "On the sweeter side, Fuji apples are a relative to red delicious apples and make a great flavor enhancer. They have a more mild flavor, so they are great in dishes that need a little something extra without overpowering the other ingredients. They are best raw, in salads or slaws or sauces."
+  },
+  {
+    "name": "Gala",
+    "color": "#bc2331",
+    "description": "Gala apples are taller, thinner, and less wide than other apples. They are a light red color with more yellow on their skin than other red varieties, and they taste mildly sweet and crisp. That flavor is not intense, but they still make great cooking and baking companions."
+  }
+]

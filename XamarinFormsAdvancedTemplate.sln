@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30711.63
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinFormsAdvancedTemplate", "XamarinFormsAdvancedTemplate\XamarinFormsAdvancedTemplate.csproj", "{5CC8E011-6F11-4530-AF8C-2E60B8AFE6B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XamarinFormsAdvancedTemplate", "XamarinFormsAdvancedTemplate\XamarinFormsAdvancedTemplate.csproj", "{5CC8E011-6F11-4530-AF8C-2E60B8AFE6B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinFormsAdvancedTemplate.Android", "XamarinFormsAdvancedTemplate.Android\XamarinFormsAdvancedTemplate.Android.csproj", "{0D809C55-B0BF-495F-B120-ABEE7A2A4532}"
 EndProject
