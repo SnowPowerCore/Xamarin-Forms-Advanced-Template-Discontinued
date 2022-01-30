@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<base:BasePageView xmlns="http://xamarin.com/schemas/2014/forms"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                   xmlns:base="clr-namespace:XamarinFormsAdvancedTemplate.Views.Pages"
+                   x:Class="XamarinFormsAdvancedTemplate.Views.Pages.AppleDetailPage"
+                   xmlns:vms="clr-namespace:XamarinFormsAdvancedTemplate.ViewModels"
+                   x:DataType="vms:AppleViewModel">
+    <ScrollView Orientation="Vertical" HorizontalScrollBarVisibility="Never">
+        <StackLayout Orientation="Vertical">
+            <Label FontSize="Medium" Text="{Binding SelectedApple.Name, Mode=OneTime}"/>
+            <Label FontSize="16" Text="{Binding SelectedApple.Description, Mode=OneTime}"/>
+        </StackLayout>
+    </ScrollView>
+</base:BasePageView>

@@ -2,7 +2,7 @@
 
 namespace XamarinFormsAdvancedTemplate.Services.Utils.Message
 {
-    public interface IMessageService : IToastService
+    public interface IMessageService
     {
         Task DisplayInfoAsync(string message);
 
