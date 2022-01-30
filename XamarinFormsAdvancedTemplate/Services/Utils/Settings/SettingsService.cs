@@ -3,48 +3,31 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Xamarin.Forms;
+using XamarinFormsAdvancedTemplate.Models;
 
 namespace XamarinFormsAdvancedTemplate.Services.Utils.Settings
 {
     public class SettingsService : ISettingsService
     {
-        #region Fields
-        private IConfiguration Configuration { get; }
-        #endregion
-
-        #region Properties
-        public string ProjectName => Configuration["ProjectName"];
-
-        public string SupportNumber => Configuration["SupportNumber"];
-
-        public string SupportEmail => Configuration["SupportEmail"];
-
-        public string DefaultApiUrl => Configuration["DefaultApiUrl"];
-
-        public string AppCenterAndroidKey => Configuration["AppCenterAndroidKey"];
-
-        public string AppCenteriOSKey => Configuration["AppCenteriOSKey"];
-        #endregion
+        public AppSettings Settings { get; } = new AppSettings();
 
         public SettingsService(IConfiguration configuration)
         {
-            Configuration = configuration;
+            configuration.Bind(Settings);
         }
 
-        #region Methods
         public bool ContainsKey(string key) =>
-            Application.Current.Properties.ContainsKey(key);
+            Xamarin.Forms.Application.Current.Properties.ContainsKey(key);
 
         public Task AddOrUpdateValueAsync<T>(string key, T value, bool serialize = false)
         {
             if (serialize)
-                Application.Current.Properties[key] = JsonConvert.SerializeObject(value);
-            else Application.Current.Properties[key] = value;
+                Xamarin.Forms.Application.Current.Properties[key] = JsonConvert.SerializeObject(value);
+            else Xamarin.Forms.Application.Current.Properties[key] = value;
 
             try
             {
-                return Application.Current.SavePropertiesAsync();
+                return Xamarin.Forms.Application.Current.SavePropertiesAsync();
             }
             catch (Exception ex)
             {
@@ -63,13 +46,13 @@ namespace XamarinFormsAdvancedTemplate.Services.Utils.Settings
                 var value = item.Value;
 
                 if (serialize)
-                    Application.Current.Properties[key] = JsonConvert.SerializeObject(value);
-                else Application.Current.Properties[key] = value;
+                    Xamarin.Forms.Application.Current.Properties[key] = JsonConvert.SerializeObject(value);
+                else Xamarin.Forms.Application.Current.Properties[key] = value;
             }
 
             try
             {
-                return Application.Current.SavePropertiesAsync();
+                return Xamarin.Forms.Application.Current.SavePropertiesAsync();
             }
             catch (Exception ex)
             {
@@ -83,9 +66,9 @@ namespace XamarinFormsAdvancedTemplate.Services.Utils.Settings
         public T GetValueOrDefault<T>(string key, T defaultValue = default, bool deserialize = false)
         {
             T value = defaultValue;
-            if (Application.Current.Properties.ContainsKey(key))
+            if (Xamarin.Forms.Application.Current.Properties.ContainsKey(key))
             {
-                var data = Application.Current.Properties[key];
+                var data = Xamarin.Forms.Application.Current.Properties[key];
                 if (deserialize) value = JsonConvert.DeserializeObject<T>((string)data);
                 else value = (T)data;
             }
@@ -95,8 +78,8 @@ namespace XamarinFormsAdvancedTemplate.Services.Utils.Settings
         public T GetApplicationResourceOrDefault<T>(string key, T defaultValue = default)
         {
             T value = defaultValue;
-            if (Application.Current.Resources.ContainsKey(key))
-                value = (T)Application.Current.Resources[key];
+            if (Xamarin.Forms.Application.Current.Resources.ContainsKey(key))
+                value = (T)Xamarin.Forms.Application.Current.Resources[key];
             return null != value ? value : defaultValue;
         }
 
@@ -110,13 +93,13 @@ namespace XamarinFormsAdvancedTemplate.Services.Utils.Settings
 
         public Task RemoveValueAsync(string key)
         {
-            if (Application.Current.Properties.ContainsKey(key))
+            if (Xamarin.Forms.Application.Current.Properties.ContainsKey(key))
             {
-                Application.Current.Properties.Remove(key);
+                Xamarin.Forms.Application.Current.Properties.Remove(key);
 
                 try
                 {
-                    return Application.Current.SavePropertiesAsync();
+                    return Xamarin.Forms.Application.Current.SavePropertiesAsync();
                 }
                 catch (Exception ex)
                 {
@@ -133,13 +116,13 @@ namespace XamarinFormsAdvancedTemplate.Services.Utils.Settings
 
             foreach (var item in keys)
             {
-                if (Application.Current.Properties.ContainsKey(item))
-                    Application.Current.Properties.Remove(item);
+                if (Xamarin.Forms.Application.Current.Properties.ContainsKey(item))
+                    Xamarin.Forms.Application.Current.Properties.Remove(item);
             }
 
             try
             {
-                return Application.Current.SavePropertiesAsync();
+                return Xamarin.Forms.Application.Current.SavePropertiesAsync();
             }
             catch (Exception ex)
             {
@@ -149,6 +132,5 @@ namespace XamarinFormsAdvancedTemplate.Services.Utils.Settings
                 return Task.CompletedTask;
             }
         }
-        #endregion
     }
 }

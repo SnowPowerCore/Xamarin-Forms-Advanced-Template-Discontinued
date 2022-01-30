@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Reflection;
 using System.Resources;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -31,7 +30,7 @@ namespace XamarinFormsAdvancedTemplate.Helpers
 
         static StringTranslationExtensions()
         {
-            var assembly = typeof(AppResources).GetTypeInfo().Assembly;
+            var assembly = typeof(AppResources).Assembly;
             var assemblyName = assembly.GetName();
             _resourceManager = new ResourceManager($"{assemblyName.Name}.Resources.AppResources", assembly);
         }
@@ -46,7 +45,7 @@ namespace XamarinFormsAdvancedTemplate.Helpers
             if (text != null)
                 return _resourceManager.GetString(text, CultureInfo.CurrentCulture);
 
-            return "";
+            return string.Empty;
         }
     }
 }

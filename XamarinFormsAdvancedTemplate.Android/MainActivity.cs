@@ -1,6 +1,9 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
+using AppHosting.Abstractions.Interfaces;
+using AppHosting.Hosting;
+using AppHosting.Xamarin.Forms.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using XamarinFormsAdvancedTemplate.Android.Implementations;
 using XamarinFormsAdvancedTemplate.Services.Interfaces;
@@ -12,7 +15,7 @@ namespace XamarinFormsAdvancedTemplate.Android
         MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override async void OnCreate(Bundle savedInstanceState)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
@@ -22,17 +25,26 @@ namespace XamarinFormsAdvancedTemplate.Android
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
             AGlide.Forms.Init(this);
             XamEffects.Droid.Effects.Init();
-            Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
+            Rg.Plugins.Popup.Popup.Init(this);
 
-            LoadApplication(Startup.Init(ConfigureServices));
+            var appHost = CreateMobileHostBuilder().Build();
+            LoadApplication(
+                await appHost.StartAsync<App>().ConfigureAwait(false));
         }
 
-        private void ConfigureServices(IServiceCollection services)
+        public IAppHostBuilder CreateMobileHostBuilder() =>
+            AppHost
+                .CreateDefaultAppBuilder<Startup>(default)
+                .ConfigureServices(ConfigureNativeServices)
+                .UseAppVisualProcessor()
+                .UseLegacyTabbedNavigation();
+
+        private void ConfigureNativeServices(IServiceCollection services)
         {
-            services.AddSingleton(typeof(ILocalizeService), typeof(LocalizeService));
-            services.AddSingleton(typeof(IAppQuit), typeof(AppQuit));
-            services.AddSingleton(typeof(IToast), typeof(Toast));
-            services.AddSingleton(typeof(IKeyboard), typeof(Keyboard));
+            services.AddSingleton<ILocalizeService, LocalizeService>();
+            services.AddSingleton<IAppQuit, AppQuit>();
+            services.AddSingleton<IToast, Toast>();
+            services.AddSingleton<IKeyboard, Keyboard>();
         }
 
         public override void OnBackPressed() =>

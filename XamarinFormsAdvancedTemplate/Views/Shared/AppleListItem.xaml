@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Grid xmlns="http://xamarin.com/schemas/2014/forms"
+      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+      xmlns:models="clr-namespace:XamarinFormsAdvancedTemplate.Models"
+      xmlns:xe="clr-namespace:XamEffects;assembly=XamEffects"
+      x:Class="XamarinFormsAdvancedTemplate.Views.Shared.AppleListItem"
+      Style="{x:StaticResource appleItem}" xe:Commands.TapParameter="{Binding .}"
+      x:Name="appleListItem" x:DataType="models:Apple">
+    <Grid.Resources>
+        <ResourceDictionary>
+            <Style x:Key="appleItem" TargetType="Grid">
+                <Setter Property="CompressedLayout.IsHeadless" Value="True"/>
+                <Setter Property="HeightRequest" Value="96"/>
+                <Setter Property="RowSpacing" Value="0"/>
+                <Setter Property="Padding" Value="15,0"/>
+            </Style>
+            <Style x:Key="appleBackground" TargetType="Rectangle">
+                <Setter Property="BackgroundColor" Value="{Binding Color, Mode=OneTime}"/>
+            </Style>
+            <Style x:Key="appleName" TargetType="Label">
+                <Setter Property="Margin" Value="12,12"/>
+                <Setter Property="HorizontalTextAlignment" Value="Start"/>
+                <Setter Property="VerticalTextAlignment" Value="End"/>
+                <Setter Property="FontSize" Value="18"/>
+            </Style>
+        </ResourceDictionary>
+    </Grid.Resources>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Rectangle Grid.RowSpan="2" Style="{x:StaticResource appleBackground}"/>
+    <Label Grid.Row="1" Style="{x:StaticResource appleName}"
+           Text="{Binding Name, Mode=OneTime}"/>
+</Grid>

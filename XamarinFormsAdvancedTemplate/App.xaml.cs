@@ -1,53 +1,44 @@
-﻿using System;
+﻿using AppHosting.Abstractions.Interfaces;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
-using XamarinFormsAdvancedTemplate.Services.Utils.Analytics;
-using XamarinFormsAdvancedTemplate.Services.Utils.Language;
-using XamarinFormsAdvancedTemplate.Services.Utils.Navigation;
+using XamarinFormsAdvancedTemplate.Services.Utils.Application;
+using XamarinFormsAdvancedTemplate.Views.Tabbed;
 using Application = Xamarin.Forms.Application;
 
 namespace XamarinFormsAdvancedTemplate
 {
     public partial class App : Application
     {
-        #region Fields
-        private ILanguageService _language;
-        private INavigationService _navigation;
-        private IAnalyticsService _analytics;
-        #endregion
+        private readonly IApplicationService _application;
+        private readonly IAppHostLifetime _appHostLifetime;
 
-        #region Properties
-        public static IServiceProvider Services { get; set; }
-        #endregion
-
-        #region Constructor
-        public App()
+        public App(IApplicationService application,
+                   IAppHostLifetime appHostLifetime)
         {
-            InitializeComponent();
-            Current
-                .On<Android>()
-                .UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
 
-            InitApp();
-        }
-        #endregion
-
-        #region Methods
-        private void InitApp()
-        {
-            _language = (ILanguageService)Services.GetService(typeof(ILanguageService));
-            _navigation = (INavigationService)Services.GetService(typeof(INavigationService));
-            _analytics = (IAnalyticsService)Services.GetService(typeof(IAnalyticsService));
+            _application = application;
+            _appHostLifetime = appHostLifetime;
         }
 
         protected override void OnStart()
         {
-            base.OnStart();
+            InitializeComponent();
 
-            _language.DetermineAndSetLanguage();
-            _navigation.DetermineAndSetMainPage("mainPage");
-            _analytics.TrackEvent("App started.");
+            Current
+                .On<Android>()
+                .UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
+
+            _application.InitializeApplication<AppTabbedPage>();
         }
-        #endregion
+
+        protected override void OnResume()
+        {
+            _appHostLifetime.NotifyResuming();
+        }
+
+        protected override void OnSleep()
+        {
+            _appHostLifetime.NotifySleeping();
+        }
     }
 }

@@ -1,108 +1,80 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AppHosting.Xamarin.Forms.Abstractions.Interfaces;
+using AppHosting.Xamarin.Forms.Abstractions.Interfaces.Builders;
+using AppHosting.Xamarin.Forms.Extensions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.IO;
-using System.Reflection;
 using Xamarin.Forms;
+using XamarinFormsAdvancedTemplate.Services.Apple;
 using XamarinFormsAdvancedTemplate.Services.Utils.Analytics;
+using XamarinFormsAdvancedTemplate.Services.Utils.Application;
 using XamarinFormsAdvancedTemplate.Services.Utils.Language;
 using XamarinFormsAdvancedTemplate.Services.Utils.Message;
-using XamarinFormsAdvancedTemplate.Services.Utils.Navigation;
 using XamarinFormsAdvancedTemplate.Services.Utils.Settings;
 using XamarinFormsAdvancedTemplate.ViewModels;
 using XamarinFormsAdvancedTemplate.Views.Pages;
-using XamarinFormsAdvancedTemplate.Views.Shell;
+using XamarinFormsAdvancedTemplate.Views.Tabbed;
 
 namespace XamarinFormsAdvancedTemplate
 {
     /// <summary>
     /// We create application and all deps throughout this class
     /// </summary>
-    public static class Startup
+    public class Startup : IAppStartup
     {
         /// <summary>
-        /// Use this method to initialize application
-        /// </summary>
-        /// <param name="nativeConfigureServices">Native services' configure callback</param>
-        /// <returns>Application</returns>
-        public static App Init(Action<IServiceCollection> nativeConfigureServices)
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var assemblyName = assembly.GetName();
-#if RELEASE
-            using (var stream = assembly
-                .GetManifestResourceStream($"{assemblyName.Name}.Configuration.appsettings.Release.json"))
-#else
-            using (var stream = assembly
-                .GetManifestResourceStream($"{assemblyName.Name}.Configuration.appsettings.Debug.json"))
-#endif
-            {
-                var host = new HostBuilder()
-                    .UseContentRoot(Directory.GetCurrentDirectory())
-                    .UseDefaultServiceProvider((context, options) =>
-                    {
-                        var isDevelopment = context.HostingEnvironment.IsDevelopment();
-                        options.ValidateScopes = isDevelopment;
-                        options.ValidateOnBuild = isDevelopment;
-                    })
-                    .ConfigureHostConfiguration(c =>
-                    {
-                        c.AddJsonStream(stream);
-                    })
-                    .ConfigureServices(x =>
-                    {
-                        nativeConfigureServices(x);
-                        ConfigureServices(x);
-                        RegisterRoutes();
-                    })
-#if DEBUG
-                    .ConfigureLogging(logging =>
-                    {
-                        logging.ClearProviders();
-                        logging.AddConsole();
-                    })
-#endif
-                    .Build();
-
-                App.Services = host.Services;
-
-                return App.Services.GetService<App>();
-            }
-        }
-
-        /// <summary>
-        /// Crossplatform services configuration
+        /// Cross-platform services configuration
         /// </summary>
         /// <param name="services">Services collection</param>
-        private static void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
-            #region Services
-            services.AddSingleton<IAnalyticsService, AnalyticsService>();
-            services.AddSingleton<ILanguageService, LanguageService>();
-            services.AddSingleton<IMessageService, MessageService>();
-            services.AddSingleton<INavigationService, ShellNavigationService>();
-            services.AddSingleton<ISettingsService, SettingsService>();
-            #endregion
+            services.AddVisualProcessingCore();
 
-            #region ViewModels
-            services.AddSingleton<WelcomeViewModel>();
-            #endregion
+            services
+                .AddSingleton<IApplicationService, ApplicationService>()
+                .AddSingleton<IApplicationInfrastructureService, ApplicationInfrastructureService>()
+                .AddSingleton<IApplicationTrackingService, ApplicationTrackingService<App>>()
+                .AddSingleton<IAnalyticsService, AnalyticsService>()
+                .AddSingleton<ILanguageService, LanguageService>()
+                .AddSingleton<IMessageService, MessageService>()
+                .AddSingleton<ISettingsService, SettingsService>()
+                .AddSingleton<IAppleService, AppleService>()
 
-            #region Application
-            services.AddSingleton<App>();
-            #endregion
+                .AddSingleton<AppleViewModel>()
+
+                .AddSingleton<App>()
+                .AddSingleton<AppTabbedPage>();
+        }
+
+        public void ConfigurePage(IPageBuilder pageProcessing)
+        {
+            pageProcessing
+                .AssignPageAppearing()
+                .AssignPageDisappearing();
+
+            pageProcessing.ProcessPageElements();
+        }
+
+        public void ConfigureElement(IElementBuilder elementProcessing)
+        {
+            elementProcessing
+                .AssignBindingContext()
+                .AssignChildrenBindingContext();
+
+            elementProcessing
+                .AssignAttachedAsyncCommands()
+                .AssignAttachedCommands()
+                .AssignAsyncCommands()
+                .AssignCommands();
         }
 
         /// <summary>
         /// Registers routes for navigation
         /// </summary>
-        public static void RegisterRoutes()
+        public void RegisterRoutes()
         {
             //Routes
-            Routing.RegisterRoute("mainPage", typeof(AppShell));
-            Routing.RegisterRoute("welcomePage", typeof(WelcomePage));
+            Routing.RegisterRoute("appleListPage", typeof(AppleListPage));
+            Routing.RegisterRoute("appleDetailPage", typeof(AppleDetailPage));
+            Routing.RegisterRoute("otherPage", typeof(OtherPage));
         }
     }
 }
