@@ -26,7 +26,7 @@ Zip file is a template package. It contains:
 
 ### Installation
 
-Place **.zip** file from this repo's latest release into the *`%userprofile%\Documents\Visual Studio 2019\Templates\ProjectTemplates`* folder. Open **Visual Studio**, select **"Create new"** option and search for `Xamarin Forms Advanced Template.` Scroll down to see the template.
+Place **.zip** file from this repo's latest release into the *`%userprofile%\Documents\Visual Studio [Version]\Templates\ProjectTemplates`* folder. Open **Visual Studio**, select **"Create new"** option and search for `Xamarin Forms Advanced Template.` Scroll down to see the template.
 If you're not using VS for Windows, or prefer another IDE, please, consider cloning this repo instead.
 
 ### In-depth overview
