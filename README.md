@@ -11,7 +11,7 @@ Feel free to contribute or create issues for this project.
 Zip file is a template package. It contains:
 * **[AppHosting](https://github.com/SnowPowerCore/AppHosting)** `(full-fledged dependency container with Xamarin.Forms integration)`
 * **Async commands** `(via AsyncAwaitBestPractices.MVVM library)`
-* **Helpers** `(event-to-command behaviour, image resource, translate, viewmodel locator)`
+* **Helpers** `(event-to-command behaviour, image resource, translate)`
 * **Resources** `(with small amount of pre-installed common labels)`
 * **Utility & cross-platform services**
 * **Better API management** `(via Refit library)`
