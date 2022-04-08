@@ -138,3 +138,6 @@ Android & iOS have already been pre-configured to use `AppHosting` library & pro
 > **Startup tracing & LLVM enabled for Android**
 
 Startup tracing is a feature for decreasing application startup time with a small side effect on APK size. Read more [here](https://devblogs.microsoft.com/xamarin/faster-startup-times-with-startup-tracing-on-android/). You can also setup custom profile for further improvements by yourself. Read more [here](https://devblogs.microsoft.com/xamarin/faster-android-startup-times-with-startup-tracing/). LLVM is an optimizing compiler. Read about it [here](https://docs.microsoft.com/en-us/xamarin/android/deploy-test/release-prep/?tabs=windows#llvm-optimizing-compiler). Linker behaviour is set to "Sdk Assemblies Only".
+
+### Stats
+![Alt](https://repobeats.axiom.co/api/embed/15272b93f466751676275d4958152ba7669f0762.svg "Repobeats analytics image")
